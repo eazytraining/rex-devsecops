@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  frontend:
+    image: front
+    container_name: recipe-app-frontend
+    ports:
+      - "3000:80"
+    environment:
+      VITE_API_URL: https://54.82.6.84:8443/api
+    depends_on:
+      - app
+
+volumes:
+  db_data:
