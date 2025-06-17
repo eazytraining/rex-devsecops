@@ -28,5 +28,4 @@ RUN chmod +x /generate-config.sh
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
 ENTRYPOINT ["/bin/sh", "-c", "/generate-config.sh && exec nginx -g 'daemon off;'"]
