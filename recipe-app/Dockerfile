@@ -13,8 +13,6 @@ RUN npm install
 # Copie le reste du code source pour le build
 COPY . .
 
-ARG VITE_API_URL 
-ENV VITE_API_URL=${VITE_API_URL}
 # Build l'app (TypeScript + Vite)
 RUN npm run build
 
@@ -23,10 +21,12 @@ FROM nginx:alpine AS production
 
 # Copie le build Vite (par défaut dans /app/dist) vers le dossier statique Nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
-
+COPY scripts/generate-config.sh /generate-config.sh
+RUN chmod +x /generate-config.sh
 # Copie une config Nginx si besoin (optionnel)
 # COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/bin/sh", "-c", "/generate-config.sh && exec nginx -g 'daemon off;'"]

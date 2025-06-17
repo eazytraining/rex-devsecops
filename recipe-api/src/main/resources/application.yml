@@ -9,14 +9,16 @@ spring:
   jpa:
     hibernate.ddl-auto: update
     show-sql: true
+    defer-datasource-initialization: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
   sql:
     init:
-      mode: never
+      mode: always
       data-locations: classpath:db/data.sql
+    
 
 logging:
   level:
@@ -24,7 +26,7 @@ logging:
     org.springframework.web: debug
 
 app:
-  frontend-url: http://localhost:5173
+  frontend-url: ${FRONTEND_URL:http://localhost:5173}
   secret-key: __SECRET_KEY_PLACEHOLDER__
     #  secret-key: Nnyu9QZEZka7BtDUzpMR0oc334KXdLBUhjyNlSXsBFE= 
   expiration-time: 86400000

@@ -1,19 +1,18 @@
 services:
   recipe-api:
-    image: api-backend
+    image: api:v1.0
     container_name: recipe_api
     ports:
-      - "8000:8000"
+      - "8080:8080"
       - "8443:8443"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://recipe_db:3306/recipe-demo?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      - SPRING_DATASOURCE_USERNAME=recipe_user
-      - SPRING_DATASOURCE_PASSWORD=recipe_pass
-      - SPRING_APPLICATION_NAME=recipe-demo
-      - SPRING_FRONTEND_URL=http://localhost:5173
+    env_file:
+      - .env
     depends_on:
       recipe-db:
         condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - recipe-net
 
   recipe-db:
     image: mysql:8.0
@@ -33,7 +32,29 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    restart: unless-stopped
+    networks:
+      - recipe-net
+
+  recipe-frontend:
+    image: app:v1.0
+    container_name: recipe_frontend
+    ports:
+      - "5173:80"
+    environment:
+      - API_URL=https://your_ip:8443/api
+    depends_on:
+      - recipe-api
+
+    restart: unless-stopped
+    networks:
+      - recipe-net
 
 volumes:
   recipe_db_data:
     driver: local
+
+networks:
+  recipe-net:
+    driver: bridge
+    
