@@ -1,0 +1,7 @@
+---
+- name: Déployer toute la stack Docker
+  hosts: localhost
+  become: true
+
+  roles:
+    - docker-installation

@@ -1,0 +1,7 @@
+---
+all:
+  children:
+    docker_hosts:
+      hosts:
+        api-server1.example.com:
+        frontend-server1.example.com:
