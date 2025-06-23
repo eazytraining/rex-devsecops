@@ -1,2 +1,22 @@
 ---
 # tasks file for deployment
+
+- name: Lancer (ou relancer) le container API
+  docker_container:
+    name: "{{ api_container }}"
+    image: "api:{{ tag_api }}"
+    state: started
+    restart_policy: always
+    published_ports:
+      - "8080:8080"
+    env:
+      SPRING_PROFILES_ACTIVE: prod
+
+- name: Lancer (ou relancer) le container Frontend
+  docker_container:
+    name: "{{ frontend_container }}"
+    image: "frontend:{{ tag_front }}"
+    state: started
+    restart_policy: always
+    published_ports:
+      - "80:80"

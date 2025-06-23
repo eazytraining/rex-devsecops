@@ -1,2 +1,48 @@
 ---
 # defaults file for deployment
+
+# Images et tags
+tag_api: latest
+tag_front: latest
+
+# Conteneurs
+api_container: "recipe_api"
+db_container: "recipe_db"
+frontend_container: "recipe_frontend"
+
+# Ports
+api_ports:
+  - "8080:8080"
+  - "8443:8443"
+db_ports:
+  - "3306:3306"
+frontend_ports:
+  - "5173:80"
+
+# Environnement
+api_env:
+  - "SPRING_DATASOURCE_URL=jdbc:mysql://recipe_db:3306/recipe-demo?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+  - "SPRING_DATASOURCE_USERNAME=recipe_user"
+  - "SPRING_APPLICATION_NAME=recipe-demo"
+  - "FRONTEND_URL=http://your_ip:5173"
+  - "SPRING_DATASOURCE_PASSWORD=recipe_pass"
+
+db_env:
+  - "MYSQL_ROOT_PASSWORD=root_password"
+  - "MYSQL_DATABASE=recipe-demo"
+  - "MYSQL_USER=recipe_user"
+  - "MYSQL_PASSWORD=recipe_pass"
+frontend_env:
+  - "API_URL=https://{{ ansible_default_ipv4.address }}:8443/api"
+
+# Volumes et réseaux
+db_volume: "recipe_db_data:/var/lib/mysql"
+network: "recipe-net"
+
+# Healthcheck DB
+db_healthcheck:
+  test: '["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "recipe_user", "-proot_password"]'
+  interval: "10s"
+  timeout: "5s"
+  retries: 5
+  start_period: "10s"

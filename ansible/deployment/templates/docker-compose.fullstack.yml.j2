@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  recipe-api:
+    image: api:{{ tag_api }}
+    container_name: {{ api_container }}
+    ports:
+{% for p in api_ports %}
+      - "{{ p }}"
+{% endfor %}
+    env_file:
+      - {{ api_env_file }}
+    depends_on:
+      recipe-db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - {{ network }}
+
+  recipe-db:
+    image: {{ db_image }}
+    container_name: {{ db_container }}
+    ports:
+{% for p in db_ports %}
+      - "{{ p }}"
+{% endfor %}
+    environment:
+{% for e in db_env %}
+      - {{ e }}
+{% endfor %}
+    volumes:
+      - {{ db_volume }}
+    healthcheck:
+      test: {{ db_healthcheck.test }}
+      interval: {{ db_healthcheck.interval }}
+      timeout: {{ db_healthcheck.timeout }}
+      retries: {{ db_healthcheck.retries }}
+      start_period: {{ db_healthcheck.start_period }}
+    restart: unless-stopped
+    networks:
+      - {{ network }}
+
+  recipe-frontend:
+    image: frontend:{{ tag_front }}
+    container_name: {{ frontend_container }}
+    ports:
+{% for p in frontend_ports %}
+      - "{{ p }}"
+{% endfor %}
+    environment:
+{% for e in frontend_env %}
+      - {{ e }}
+{% endfor %}
+    depends_on:
+      - recipe-api
+    restart: unless-stopped
+    networks:
+      - {{ network }}
+
+volumes:
+  recipe_db_data:
+
+networks:
+  {{ network }}:
+    driver: bridge

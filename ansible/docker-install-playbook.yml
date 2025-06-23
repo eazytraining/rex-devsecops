@@ -4,8 +4,6 @@
   become: true
 
   vars:
-    api_image: api:{{ tag_api }}
-    frontend_image: frontend:{{ tag__front }}
     tag_api: v1
     tag__front: v1
     api_container: api
@@ -15,4 +13,4 @@
     docker_version: "5:28.2.2-1~ubuntu.24.04~noble"
 
   roles:
-    - build-image
+    - deployment

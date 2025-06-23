@@ -3,7 +3,5 @@
 
 api_src_path: "../recipe-api"
 frontend_src_path: "../recipe-app"
-api_image: api:{{ tag_api }}
-frontend_image: frontend:{{ tag__front }}
 tag_api: latest
-tag__front: latest
+tag_front: latest
