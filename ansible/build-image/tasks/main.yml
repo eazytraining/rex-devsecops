@@ -1,2 +1,25 @@
 ---
 # tasks file for build-image
+
+- name: Exécuter un script dans le répertoire parent
+  command: pwd
+  args:
+    chdir: "../recipe-api"
+
+- name: Build image API
+  docker_image:
+    name: "{{ api_image }}"
+    build:
+      path: "{{ api_src_path }}"
+    source: build  
+  # args:
+  #   chdir: "{{ api_src_path }}"
+
+- name: Build image Frontend
+  docker_image:
+    name: "{{ frontend_image }}"
+    build:
+      path: "{{ frontend_src_path }}"
+    source: build  
+  # args:
+  #   chdir: "{{ frontend_src_path }}"
