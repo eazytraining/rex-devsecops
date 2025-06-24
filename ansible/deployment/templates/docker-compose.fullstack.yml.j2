@@ -8,8 +8,10 @@ services:
 {% for p in api_ports %}
       - "{{ p }}"
 {% endfor %}
-    env_file:
-      - {{ api_env_file }}
+    environment:
+{% for e in api_env %}
+      - {{ e }}
+{% endfor %}
     depends_on:
       recipe-db:
         condition: service_healthy

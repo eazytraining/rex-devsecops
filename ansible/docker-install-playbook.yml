@@ -5,12 +5,17 @@
 
   vars:
     tag_api: v1
-    tag__front: v1
+    tag_front: v1
     api_container: api
     frontend_container: frontend
     api_src_path: "../recipe-api"
     frontend_src_path: "../recipe-app"
     docker_version: "5:28.2.2-1~ubuntu.24.04~noble"
+  
+  # pre_tasks:
+  #   - name
 
   roles:
+    # - docker-installation
+    - build-image
     - deployment
