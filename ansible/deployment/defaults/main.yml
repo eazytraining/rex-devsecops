@@ -19,12 +19,15 @@ db_ports:
 frontend_ports:
   - "5173:80"
 
+#public ip of api
+public_ip: "your_public_ip"
+
 # Environnement
 api_env:
   - "SPRING_DATASOURCE_URL=jdbc:mysql://recipe_db:3306/recipe-demo?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
   - "SPRING_DATASOURCE_USERNAME=recipe_user"
   - "SPRING_APPLICATION_NAME=recipe-demo"
-  - "FRONTEND_URL=http://your_ip:5173"
+  - "FRONTEND_URL=http://{{ public_ip }}:5173"
   - "SPRING_DATASOURCE_PASSWORD=recipe_pass"
 
 db_env:
@@ -32,8 +35,6 @@ db_env:
   - "MYSQL_DATABASE=recipe-demo"
   - "MYSQL_USER=recipe_user"
   - "MYSQL_PASSWORD=recipe_pass"
-frontend_env:
-  - "API_URL=https://{{ ansible_default_ipv4.address }}:8443/api"
 
 # Volumes et réseaux
 db_volume: "recipe_db_data:/var/lib/mysql"

@@ -50,9 +50,7 @@ services:
       - "{{ p }}"
 {% endfor %}
     environment:
-{% for e in frontend_env %}
-      - {{ e }}
-{% endfor %}
+      - API_URL=https://{{ public_ip }}:8443/api
     depends_on:
       - recipe-api
     restart: unless-stopped

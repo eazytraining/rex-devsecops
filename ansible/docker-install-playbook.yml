@@ -11,6 +11,7 @@
     api_src_path: "../recipe-api"
     frontend_src_path: "../recipe-app"
     docker_version: "5:28.2.2-1~ubuntu.24.04~noble"
+    public_ip: "44.202.96.196"
   
   # pre_tasks:
   #   - name
