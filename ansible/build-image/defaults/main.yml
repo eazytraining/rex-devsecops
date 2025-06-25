@@ -1,7 +1,0 @@
----
-# defaults file for build-image
-
-api_src_path: "../recipe-api"
-frontend_src_path: "../recipe-app"
-tag_api: latest
-tag_front: latest

@@ -57,7 +57,8 @@ services:
 
 volumes:
   recipe_db_data:
-
+    name: recipe_db_data
 networks:
   recipe-net:
     driver: bridge
+    name: recipe-net

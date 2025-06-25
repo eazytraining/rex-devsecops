@@ -13,10 +13,8 @@
     docker_version: "5:28.2.2-1~ubuntu.24.04~noble"
     public_ip: "44.210.118.110"
   
-  # pre_tasks:
-  #   - name
 
   roles:
-    - docker-installation
-    - build-image
-    - deployment
+    - roles/docker-installation
+    - roles/build-image
+    - roles/deployment
