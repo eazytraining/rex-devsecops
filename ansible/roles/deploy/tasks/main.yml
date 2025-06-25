@@ -4,7 +4,7 @@
 - name: Templatiser le fichier docker-compose.yml
   ansible.builtin.template:
     src: docker-compose.yml.j2
-    dest: ../docker-compose.yml
+    dest: "{{ compose_project_dir }}/docker-compose.yml"
     mode: '0644'
 
 - name: Lancer les conteneurs via Docker Compose
