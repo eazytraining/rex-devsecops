@@ -1,0 +1,29 @@
+# Fichiers Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.log
+
+# Environnement virtuel
+venv/
+ENV/
+env/
+.venv/
+
+# Molecule output
+.molecule/
+.cache/
+*.retry
+
+# Fichiers Ansible
+*.retry
+*.vault
+*.orig
+
+# VS Code / IDE
+.vscode/
+.idea/
+
+# Systèmes
+.DS_Store
+Thumbs.db
