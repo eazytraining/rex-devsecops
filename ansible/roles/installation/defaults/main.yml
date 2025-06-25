@@ -1,0 +1,4 @@
+---
+# defaults file for docker-installation
+
+docker_version: "5:28.2.2-1~ubuntu.24.04~noble"
