@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   recipe-api:
-    image: api:{{ tag_api }}
+    image: api:{{ deployment_version.api }}
     container_name: {{ api_container }}
     ports:
 {% for p in api_ports %}
@@ -43,7 +43,7 @@ services:
       - {{ network }}
 
   recipe-frontend:
-    image: frontend:{{ tag_front }}
+    image: frontend:{{ deployment_version.frontend  }}
     container_name: {{ frontend_container }}
     ports:
 {% for p in frontend_ports %}

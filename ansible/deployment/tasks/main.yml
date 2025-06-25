@@ -2,13 +2,14 @@
 # tasks file for deployment
 
 - name: Templatiser le fichier docker-compose.yml
-  template:
-    src: docker-compose.fullstack.yml.j2
-    dest: ../docker-compose.fullstack.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: ../docker-compose.yml
     mode: '0644'
 
-- name: pwd
-  command: sh -c "pwd"
+- name: Lancer les conteneurs via Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: "{{ compose_project_dir }}"
+    state: restarted
+  register: compose_result
 
-- name: Lancer le docker-compose
-  command: sh -c "docker compose -f ../docker-compose.fullstack.yml up -d"

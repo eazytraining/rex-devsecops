@@ -1,34 +1,31 @@
 ---
 # tasks file for docker-installation
-# - name: Déterminer la release APT pour Docker
-#   set_fact:
-#     docker_apt_release: >-
-#       {% if ansible_distribution_release in ['jammy','focal','bionic'] %}
-#         {{ ansible_distribution_release }}
-#       {% else %}
-#         jammy
-#       {% endif %}
-#     apt_architecture: amd64
 
-- name: Mettre à jour APT
-  apt: update_cache=yes
+- name: Mettre à jour le cache APT
+  ansible.builtin.apt:
+    update_cache: yes
 
-- name: Installer ca-certificates et curl
-  apt:
-    name: [ca-certificates, curl]
+- name: Installer les dépendances requises pour Docker
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
     state: present
 
-- name: Créer /etc/apt/keyrings
-  file:
+- name: Créer le répertoire /etc/apt/keyrings
+  ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
     mode: '0755'
 
-- name: Télécharger clé GPG Docker
-  get_url:
+- name: Télécharger la clé GPG de Docker
+  ansible.builtin.get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
     dest: /etc/apt/keyrings/docker.asc
     mode: '0644'
+    force: yes
 
 - name: Récupérer l'architecture du système
   ansible.builtin.command: dpkg --print-architecture
@@ -44,19 +41,19 @@
   ansible.builtin.set_fact:
     ubuntu_codename: "{{ (os_release_raw['content'] | b64decode).split('\n') | select('match', '^UBUNTU_CODENAME=|^VERSION_CODENAME=') | map('regex_replace', '^.*?=', '') | list | first }}"
 
-- name: Créer le fichier docker.list
+- name: Ajouter le dépôt Docker officiel
   ansible.builtin.copy:
     dest: /etc/apt/sources.list.d/docker.list
     content: |
       deb [arch={{ dpkg_arch.stdout }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ubuntu_codename }} stable
     mode: '0644'
 
-- name: Mettre à jour APT (après repo)
-  apt: update_cache=yes
-  #command: apt-get update
+- name: Mettre à jour le cache APT après ajout du dépôt Docker
+  ansible.builtin.apt:
+    update_cache: yes
 
 - name: Installer Docker & plugins
-  apt:
+  ansible.builtin.apt:
     name:
       - "docker-ce={{ docker_version }}"
       - "docker-ce-cli={{ docker_version }}"
@@ -64,10 +61,11 @@
       - docker-buildx-plugin
       - docker-compose-plugin
     state: present
-  #command:  sudo apt-get install docker-ce={{ docker_version }} docker-ce-cli={{ docker_version }} containerd.io docker-buildx-plugin docker-compose-plugin
+    update_cache: yes
+  
 
-- name: Démarrer et activer Docker
-  service:
+- name: S'assurer que le service Docker est démarré et activé
+  ansible.builtin.service:
     name: docker
     state: started
     enabled: yes

@@ -1,21 +1,28 @@
 ---
 # tasks file for build-image
 
-- name: Exécuter un script dans le répertoire parent
-  command: pwd
-  args:
-    chdir: "../recipe-api"
-
-- name: Build image API
-  docker_image:
+- name: Construire l'image Docker de l'API
+  community.docker.docker_image:
     name: "api:{{ tag_api }}"
     build:
       path: "{{ api_src_path }}"
+      pull: yes
+      nocache: no
+      labels:
+        project: "api"
+        built_by: "ansible"
     source: build  
+    force_source: true  # reconstruit même si l'image existe
 
-- name: Build image Frontend
-  docker_image:
+- name: Construire l'image Docker du frontend
+  community.docker.docker_image:
     name: "frontend:{{ tag_front }}"
     build:
       path: "{{ frontend_src_path }}"
-    source: build  
+      pull: yes
+      nocache: no
+      labels:
+        project: "frontend"
+        built_by: "ansible"
+    source: build
+    force_source: true

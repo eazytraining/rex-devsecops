@@ -47,3 +47,15 @@ db_healthcheck:
   timeout: "5s"
   retries: 5
   start_period: "10s"
+
+# Chemins des sources
+compose_file_path: "{{ playbook_dir }}/../docker-compose.yml"
+compose_project_dir: "{{ playbook_dir }}/.."
+
+# Répertoire de sauvegarde
+backup_dir: "{{ playbook_dir }}/../backups"
+deployment_version: 
+  frontend: "{{ tag_front }}"
+  api: "{{ tag_api }}"
+rollback_before_deploy: true
+backup_enabled: true
