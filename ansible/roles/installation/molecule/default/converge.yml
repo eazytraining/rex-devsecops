@@ -1,0 +1,7 @@
+---
+- name: Converge build-image
+  hosts: instance
+  gather_facts: false
+  become: true
+  roles:
+    - role: ../../../installation

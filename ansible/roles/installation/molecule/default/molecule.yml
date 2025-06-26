@@ -1,0 +1,43 @@
+---
+driver:
+  name: docker
+
+platforms:
+
+  - name: instance
+    image: ubuntu:24.04
+    pre_build_image: false # on ne build pas l'image
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+     
+
+# L’étape “lint” devient un bloc de commandes shell
+lint: |
+  set -e
+  yamllint .                    # valide tous les YAML
+  ansible-lint ../../../build            # adapte le chemin vers votre rôle build-image
+
+provisioner:
+  name: ansible
+  playbooks:
+    converge: converge.yml
+  lint:
+    name: ansible-lint         # Vérifie vos playbooks et rôles Ansible
+
+verifier:
+  name: ansible
+
+scenario:
+  test_sequence:
+    - dependency               # installation des collections / requirements
+    - cleanup                  # nettoyage si instances existantes
+    - destroy                  # destruction préalable
+    - syntax                   # ansible-playbook --syntax-check
+    - create                   # lancement des containers
+    - prepare                  # hooks éventuels
+    - converge                 # import_role build-image
+    - side_effect              # tests d’effets de bord personnalisés
+    - verify                   # vérification via Ansible ou Testinfra
+    - cleanup                  # nettoyage final
+
