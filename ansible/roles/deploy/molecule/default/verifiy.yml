@@ -1,6 +1,6 @@
 ---
 - name: Verify deployment
-  hosts: all
+  hosts: staging
   gather_facts: false
   vars:
     api_container: "recipe_api"

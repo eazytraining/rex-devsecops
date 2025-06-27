@@ -49,8 +49,8 @@ db_healthcheck:
   start_period: "10s"
 
 # Chemins des sources
-compose_file_path: "{{ playbook_dir }}/../docker-compose.yml"
-compose_project_dir: "{{ playbook_dir }}/.."
+compose_file_path: "{{ lookup('env','HOME') }}/deploy/docker-compose.yml"
+compose_project_dir: "{{ lookup('env','HOME') }}/deploy/"
 
 # Répertoire de sauvegarde
 backup_dir: "{{ playbook_dir }}/../backups"
