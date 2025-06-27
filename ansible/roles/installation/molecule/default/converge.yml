@@ -1,7 +1,6 @@
 ---
-- name: Converge build-image
-  hosts: instance
-  gather_facts: false
+- name: Converge installation docker
+  hosts: staging
   become: true
   roles:
     - role: ../../../installation

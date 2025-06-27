@@ -1,16 +1,12 @@
 ---
 driver:
-  name: docker
+  name: default
+  options:
+    managed: false            # on ne gère pas les instances, on les crée manuellement
 
-platforms:
+platforms: 
+  - name: staging
 
-  - name: instance
-    image: ubuntu:24.04
-    pre_build_image: false # on ne build pas l'image
-    privileged: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-     
 
 # L’étape “lint” devient un bloc de commandes shell
 lint: |
@@ -20,6 +16,9 @@ lint: |
 
 provisioner:
   name: ansible
+  inventory:
+    links:
+      hosts: ../../../../host.yml
   playbooks:
     converge: converge.yml
   lint:
@@ -27,12 +26,13 @@ provisioner:
 
 verifier:
   name: ansible
+  options:
+    inventory: inventory.yml   # chemin vers l’inventaire
+
 
 scenario:
   test_sequence:
     - dependency               # installation des collections / requirements
-    - cleanup                  # nettoyage si instances existantes
-    - destroy                  # destruction préalable
     - syntax                   # ansible-playbook --syntax-check
     - create                   # lancement des containers
     - prepare                  # hooks éventuels
@@ -40,4 +40,5 @@ scenario:
     - side_effect              # tests d’effets de bord personnalisés
     - verify                   # vérification via Ansible ou Testinfra
     - cleanup                  # nettoyage final
+    - destroy  
 

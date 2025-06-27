@@ -1,7 +1,7 @@
 - name: Vérifier la version de Docker via localhost
-  hosts: localhost
-  connection: docker
-  gather_facts: false
+  hosts: staging
+  # connection: docker
+  # gather_facts: false
   vars:
     docker_version: "28.2.2"
   tasks:
