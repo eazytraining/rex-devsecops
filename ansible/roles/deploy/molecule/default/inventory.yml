@@ -1,7 +1,0 @@
-all:
-  hosts:
-    target:
-      ansible_host: 34.201.245.49  # ← IP de ta VM
-      ansible_user: ubuntu         # ← utilisateur SSH
-      ansible_port: 22
-      ansible_ssh_private_key_file: ~/.ssh/ansible.pem  # ← chemin vers ta clé privée

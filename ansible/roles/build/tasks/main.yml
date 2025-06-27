@@ -1,6 +1,12 @@
 ---
 # tasks file for build-image
 
+- name: Synchroniser le code  avec la VM
+  ansible.posix.synchronize:
+    src: "{{ lookup('env','HOME') }}/rex-devsecops/"
+    dest: "{{ lookup('env','HOME') }}/deploy/"
+    recursive: true
+
 - name: Construire l'image Docker de l'API
   community.docker.docker_image:
     name: "api:{{ tag_api }}"

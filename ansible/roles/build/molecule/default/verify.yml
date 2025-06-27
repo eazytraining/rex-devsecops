@@ -1,8 +1,9 @@
 ---
 # verify.yml: Vérification de la bonne création des images Docker
 - name: Vérifier la présence des images Docker construite
-  hosts: localhost
+  hosts: staging
   gather_facts: false
+  beacome: true
   vars:
     tag_api: v1
     tag_front: v1

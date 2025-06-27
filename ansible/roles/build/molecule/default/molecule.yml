@@ -1,16 +1,9 @@
 ---
 driver:
-  name: docker
+  name: default
 
 platforms:
-
-  - name: instance
-    image: quay.io/centos/centos:stream9
-    pre_build_image: false # on ne build pas l'image
-    privileged: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-     
+  - name: staging
 
 # L’étape “lint” devient un bloc de commandes shell
 lint: |
@@ -20,8 +13,10 @@ lint: |
 
 provisioner:
   name: ansible
+  inventory:
+    links:
+      hosts: ../../../../host.yml
   playbooks:
-    prepare: prepare.yml
     converge: converge.yml
   lint:
     name: ansible-lint         # Vérifie vos playbooks et rôles Ansible
@@ -32,13 +27,11 @@ verifier:
 scenario:
   test_sequence:
     - dependency               # installation des collections / requirements
-    - cleanup                  # nettoyage si instances existantes
-    - destroy                  # destruction préalable
     - syntax                   # ansible-playbook --syntax-check
     - create                   # lancement des containers
     - prepare                  # hooks éventuels
     - converge                 # import_role build-image
     - side_effect              # tests d’effets de bord personnalisés
     - verify                   # vérification via Ansible ou Testinfra
-    - cleanup                  # nettoyage final
+    - destroy                  # nettoyage final
 

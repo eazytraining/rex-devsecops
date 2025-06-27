@@ -26,8 +26,6 @@ provisioner:
 
 verifier:
   name: ansible
-  options:
-    inventory: inventory.yml   # chemin vers l’inventaire
 
 
 scenario:
