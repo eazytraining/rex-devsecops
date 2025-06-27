@@ -23,4 +23,6 @@ galaxy_info:
     - deploy
     - eazytraining
 
-dependencies: []
+dependencies:
+  - role: installation
+  - role: build
