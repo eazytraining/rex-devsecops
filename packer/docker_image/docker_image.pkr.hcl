@@ -70,8 +70,8 @@ build {
 
   # Provisioner: Installation de Docker
   provisioner "ansible-local" {
-    playbook_file = "../ansible/playbooks/install_docker.yml"
-    galaxy_file  = "../ansible/requirements.yml"
+    playbook_file = "../../ansible/playbooks/install_docker.yml"
+    galaxy_file  = "../../ansible/requirements.yml"
     galaxy_command = "ansible-galaxy install -r %s"
     extra_arguments = [
       "--extra-vars", "ansible_python_interpreter=/usr/bin/python3", "packer_build=true"
