@@ -32,12 +32,12 @@ jobs:
       # Initialize Packer templates
       - name: Initialize Packer Template
         id: init
-        run: "packer init ./packer/docker_image/docker_image.pkr.hcl"
+        run: "packer init ."
 
       # validate templates
       - name: Validate Template
         id: validate
-        run: "packer validate ./packer/docker_image/docker_image.pkr.hcl"
+        run: "packer validate ."
 
       # build artifact
       - name: Build Artifact
