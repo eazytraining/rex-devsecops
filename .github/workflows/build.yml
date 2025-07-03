@@ -1,0 +1,50 @@
+---
+
+name: AWS AMI using Packer Config
+
+on:
+  push:
+    branches:
+      - hashicorp
+
+#  schedule:
+#    # * is a special character in YAML so you have to quote this string
+#    - cron:  '0 4 * * *'
+
+env:
+  PRODUCT_VERSION: "1.9.4" # or: "latest"
+
+jobs:
+  golden-ami: 
+    runs-on: ubuntu-latest
+    name: golden-ami
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: ${{ env.PRODUCT_VERSION }}
+
+      # Initialize Packer templates
+      - name: Initialize Packer Template
+        id: init
+        run: "packer init ./packer/docker_image/docker_image .pkr.hcl"
+
+      # validate templates
+      - name: Validate Template
+        id: validate
+        run: "packer validate ./packer/docker_image/docker_image .pkr.hcl"
+
+      # build artifact
+      - name: Build Artifact
+        if: github.ref == 'refs/heads/hashicorp/'
+        id: build-image
+        run: "packer build ./packer/docker_image/docker_image.pkr.hcl"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1

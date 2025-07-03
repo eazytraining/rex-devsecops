@@ -10,19 +10,29 @@ packer {
 }
 
 # Data source pour l'AMI Ubuntu 22.04 LTS
+# data "amazon-ami" "base_image" {
+#   filters = {
+#     name                = "rex-devsecops-*" # Adaptez ce filtre
+#     architecture        = "x86_64"
+#     root-device-type    = "ebs"
+#     virtualization-type = "hvm"
+#   }
+
+#   most_recent = true
+#   owners      = ["self"] # Important: seulement vos AMIs
+#   region      = var.aws_region
+# }
 data "amazon-ami" "base_image" {
   filters = {
-    name                = "rex-devsecops-*" # Adaptez ce filtre
+    name                = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"
     architecture        = "x86_64"
     root-device-type    = "ebs"
     virtualization-type = "hvm"
   }
-
   most_recent = true
-  owners      = ["self"] # Important: seulement vos AMIs
+  owners      = [var.ami_owner]
   region      = var.aws_region
 }
-
 # Locals pour les valeurs calculées
 locals {
   timestamp = formatdate("YYYYMMDD-hhmmss", timestamp())
