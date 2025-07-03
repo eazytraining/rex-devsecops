@@ -33,12 +33,15 @@ jobs:
       - name: Initialize Packer Template
         id: init
         run: "packer init ./packer/docker_image/."
+        env:
+            PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}
 
       # validate templates
       - name: Validate Template
         id: validate
         run: "packer validate ./packer/docker_image/."
-
+        env:
+          PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}
       # build artifact
       - name: Build Artifact
         if: github.ref == 'refs/heads/hashicorp'
@@ -48,4 +51,5 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-east-1
+          PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}
 #######3
