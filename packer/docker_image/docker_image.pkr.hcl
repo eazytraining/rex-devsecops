@@ -6,10 +6,6 @@ packer {
       version = "1.2.8"
       source  = "github.com/hashicorp/amazon"
     }
-    ansible = {
-      version = "~> 1"
-      source = "github.com/hashicorp/ansible"
-    }
   }
 }
 
@@ -21,6 +17,7 @@ data "amazon-ami" "base_image" {
     root-device-type    = "ebs"
     virtualization-type = "hvm"
   }
+
   most_recent = true
   owners      = ["self"] # Important: seulement vos AMIs
   region      = var.aws_region
@@ -36,7 +33,7 @@ locals {
       "Name"       = local.ami_name
       "OS"         = "Ubuntu"
       "OS_Version" = "22.04 LTS"
-      "SourceAMI"  = data.amazon-ami.base_image.id
+      "SourceAMI"  = data.amazon-ami.ubuntu_22_04.id
     }
   )
 }
@@ -67,25 +64,24 @@ source "amazon-ebs" "docker_image" {
 build {
   name    = "docker_image_build"
   sources = ["source.amazon-ebs.docker_image"]
-
-  # Provisioner: Installation de Docker
-  provisioner "ansible-local" {
-    playbook_file = "../../ansible/playbooks/install_docker.yml"
-    galaxy_file  = "../../ansible/requirements.yml"
-    galaxy_command = "ansible-galaxy install -r %s"
-    extra_arguments = [
-      "--extra-vars", "ansible_python_interpreter=/usr/bin/python3", "packer_build=true"
+  # Provisioner: Script d'initialisation principal
+  provisioner "shell" {
+    script          = "../scripts/docker.sh"
+    execute_command = "sudo -E -S sh '{{ .Path }}'"
+    environment_vars = [
+      "DEBIAN_FRONTEND=noninteractive",
+      "PACKER_BUILD=1"
     ]
   }
 
   # Post-processor: Génération du manifeste
-  post-processor "manifest" {
-    output     = "manifest.json"
-    strip_path = true
-    custom_data = {
-      build_date     = timestamp()
-      packer_version = packer.version
-      source_ami     = data.amazon-ami.base_image.id
-    }
-  }
+  # post-processor "manifest" {
+  #   output     = "manifest.json"
+  #   strip_path = true
+  #   custom_data = {
+  #     build_date     = timestamp()
+  #     packer_version = packer.version
+  #     source_ami     = data.amazon-ami.ubuntu_22_04.id
+  #   }
+  # }
 }
