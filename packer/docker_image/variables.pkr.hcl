@@ -10,13 +10,13 @@ variable "aws_region" {
 variable "instance_type" {
   type        = string
   description = "Type d'instance EC2 pour le build Packer"
-  default     = "t2.medium"
+  default     = "t3.medium"
 }
 
 variable "root_volume_size" {
   type        = number
   description = "Taille du volume root (en GB)"
-  default     = 20
+  default     = 25
 }
 
 # Configuration AMI
