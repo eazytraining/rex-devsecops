@@ -32,18 +32,18 @@ jobs:
       # Initialize Packer templates
       - name: Initialize Packer Template
         id: init
-        run: "packer init ./packer/docker_image/docker_image .pkr.hcl"
+        run: "packer init ./packer/docker_image/docker_image.pkr.hcl"
 
       # validate templates
       - name: Validate Template
         id: validate
-        run: "packer validate ./packer/docker_image/docker_image .pkr.hcl"
+        run: "packer validate ./packer/docker_image/docker_image.pkr.hcl"
 
       # build artifact
       - name: Build Artifact
         if: github.ref == 'refs/heads/hashicorp/'
         id: build-image
-        run: "packer build ./packer/docker_image/docker_image.pkr.hcl"
+        run: "packer build ./packer/docker_image/docker_imag.pkr.hcl"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
