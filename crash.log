@@ -1,0 +1,49 @@
+2025/07/03 09:51:32 [INFO] Packer version: 1.13.1 [go1.23.2 windows amd64]
+2025/07/03 09:51:32 [INFO] PACKER_CONFIG env var not set; checking the default config file path
+2025/07/03 09:51:32 [INFO] PACKER_CONFIG env var set; attempting to open config file: C:\Users\Ulrich Steve NOUMSI\AppData\Roaming\packer.config
+2025/07/03 09:51:32 [WARN] Config file doesn't exist: C:\Users\Ulrich Steve NOUMSI\AppData\Roaming\packer.config
+2025/07/03 09:51:32 [INFO] Setting cache directory: e:\travail\rex-devsecops\packer_cache
+2025/07/03 09:51:32 [TRACE] listing potential installations for "github.com/hashicorp/amazon" that match "1.2.8". plugingetter.ListInstallationsOptions{PluginDirectory:"C:\\Users\\Ulrich Steve NOUMSI\\AppData\\Roaming\\packer.d\\plugins", BinaryInstallationOptions:plugingetter.BinaryInstallationOptions{APIVersionMajor:"5", APIVersionMinor:"0", OS:"windows", ARCH:"amd64", Ext:".exe", Checksummers:[]plugingetter.Checksummer{plugingetter.Checksummer{Type:"sha256", Hash:(*sha256.digest)(0xc00058f100)}}, ReleasesOnly:false}}
+2025/07/03 09:51:32 [TRACE] version "v1.3.6" of file "C:\\Users\\Ulrich Steve NOUMSI\\AppData\\Roaming\\packer.d\\plugins\\github.com\\hashicorp\\amazon\\packer-plugin-amazon_v1.3.6_x5.0_windows_amd64.exe" does not match constraint "1.2.8"
+2025/07/03 09:51:32 [TRACE] Found the following "github.com/hashicorp/amazon" installations: [{C:\Users\Ulrich Steve NOUMSI\AppData\Roaming\packer.d\plugins\github.com\hashicorp\amazon\packer-plugin-amazon_v1.2.8_x5.0_windows_amd64.exe v1.2.8 x5.0}]
+2025/07/03 09:51:32 [INFO] found external [chroot ebs ebssurrogate ebsvolume instance] builders from amazon plugin
+2025/07/03 09:51:32 [INFO] found external [import] post-processors from amazon plugin
+2025/07/03 09:51:32 found external [ami parameterstore secretsmanager] datasource from amazon plugin
+2025/07/03 09:51:32 plugin "C:\\Users\\Ulrich Steve NOUMSI\\AppData\\Roaming\\packer.d\\plugins\\github.com\\hashicorp\\amazon\\packer-plugin-amazon_v1.2.8_x5.0_windows_amd64.exe" does not support Protobuf, forcing use of Gob
+2025/07/03 09:51:32 [TRACE] listing potential installations for <nil> that match "". plugingetter.ListInstallationsOptions{PluginDirectory:"C:\\Users\\Ulrich Steve NOUMSI\\AppData\\Roaming\\packer.d\\plugins", BinaryInstallationOptions:plugingetter.BinaryInstallationOptions{APIVersionMajor:"5", APIVersionMinor:"0", OS:"windows", ARCH:"amd64", Ext:".exe", Checksummers:[]plugingetter.Checksummer{plugingetter.Checksummer{Type:"sha256", Hash:(*sha256.digest)(0xc00048e280)}}, ReleasesOnly:false}}
+2025/07/03 09:51:33 [INFO] found external [iso ovf vm] builders from virtualbox plugin
+2025/07/03 09:51:33 [INFO] found external [chroot ebs ebssurrogate ebsvolume instance] builders from amazon plugin
+2025/07/03 09:51:33 [INFO] found external [import] post-processors from amazon plugin
+2025/07/03 09:51:33 found external [ami parameterstore secretsmanager] datasource from amazon plugin
+2025/07/03 09:51:33 [INFO] found external [-packer-default-plugin-name-] builders from vagrant plugin
+2025/07/03 09:51:33 [INFO] found external [-packer-default-plugin-name- cloud registry] post-processors from vagrant plugin
+2025/07/03 09:51:33 waiting for all plugin processes to complete...
+panic: interface conversion: interface is nil, not dag.Vertex
+
+goroutine 1 [running]:
+github.com/hashicorp/packer/internal/dag.stronglyConnected(0xc0007e4f50, 0xc00088d5a0, {0x16046e0, 0xc00060f450})
+	github.com/hashicorp/packer/internal/dag/tarjan.go:31 +0x4e6
+github.com/hashicorp/packer/internal/dag.StronglyConnected(0xc00088d5a0)
+	github.com/hashicorp/packer/internal/dag/tarjan.go:19 +0x267
+github.com/hashicorp/packer/internal/dag.(*AcyclicGraph).Cycles(0x29a91d?)
+	github.com/hashicorp/packer/internal/dag/dag.go:62 +0x19
+github.com/hashicorp/packer/internal/dag.(*AcyclicGraph).Validate(0xc00088d5a0)
+	github.com/hashicorp/packer/internal/dag/dag.go:34 +0x2a
+github.com/hashicorp/packer/hcl2template.(*PackerConfig).buildPrereqsDAG(0xc00015b180)
+	github.com/hashicorp/packer/hcl2template/parser.go:453 +0x732
+github.com/hashicorp/packer/hcl2template.(*PackerConfig).evaluateBuildPrereqs(0xc00015b180, 0x1)
+	github.com/hashicorp/packer/hcl2template/parser.go:466 +0x69
+github.com/hashicorp/packer/hcl2template.(*PackerConfig).Initialize(0xc00015b180, {0x78?, 0x9b?})
+	github.com/hashicorp/packer/hcl2template/parser.go:531 +0x32e
+github.com/hashicorp/packer/command.(*ValidateCommand).RunContext(0xc00029b170, {0xc0006d4670?, 0x1?}, 0xc000519ef0)
+	github.com/hashicorp/packer/command/validate.go:84 +0x164
+github.com/hashicorp/packer/command.(*ValidateCommand).Run(0xc00029b170, {0xc0006d4670, 0x1, 0x1})
+	github.com/hashicorp/packer/command/validate.go:29 +0xbb
+github.com/mitchellh/cli.(*CLI).Run(0xc00015af00)
+	github.com/mitchellh/cli@v1.1.5/cli.go:262 +0x55f
+main.wrappedMain()
+	github.com/hashicorp/packer/main.go:274 +0xe6c
+main.realMain()
+	github.com/hashicorp/packer/main.go:51 +0xd5
+main.main()
+	github.com/hashicorp/packer/main.go:37 +0x13

@@ -43,7 +43,7 @@ locals {
       "Name"       = local.ami_name
       "OS"         = "Ubuntu"
       "OS_Version" = "22.04 LTS"
-      "SourceAMI"  = data.amazon-ami.ubuntu_22_04.id
+      "SourceAMI"  = data.amazon-ami.base_image.id
     }
   )
 }
