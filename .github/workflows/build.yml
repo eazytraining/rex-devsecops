@@ -43,7 +43,7 @@ jobs:
       - name: Build Artifact
         if: github.ref == 'refs/heads/hashicorp/'
         id: build-image
-        run: "packer build ./packer/docker_image/docker_imag.pkr.hcl"
+        run: "packer build ./packer/docker_image/."
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
