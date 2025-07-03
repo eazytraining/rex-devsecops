@@ -41,7 +41,7 @@ jobs:
 
       # build artifact
       - name: Build Artifact
-        if: github.ref == 'refs/heads/hashicorp/'
+        if: github.ref == 'refs/heads/hashicorp'
         id: build-image
         run: "packer build ./packer/docker_image/."
         env:
