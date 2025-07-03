@@ -32,12 +32,12 @@ jobs:
       # Initialize Packer templates
       - name: Initialize Packer Template
         id: init
-        run: "packer init ."
+        run: "packer init ./packer/docker_image/."
 
       # validate templates
       - name: Validate Template
         id: validate
-        run: "packer validate ."
+        run: "packer validate ./packer/docker_image/."
 
       # build artifact
       - name: Build Artifact
