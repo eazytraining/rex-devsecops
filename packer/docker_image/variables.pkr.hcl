@@ -42,7 +42,7 @@ variable "ssh_username" {
 variable "ssh_timeout" {
   type        = string
   description = "Timeout pour la connexion SSH"
-  default     = "5m"
+  default     = "10m"
 }
 
 variable "ami_description" {
