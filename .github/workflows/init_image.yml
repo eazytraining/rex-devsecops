@@ -3,7 +3,7 @@ name: Build Base Image
 on:
   push:
     branches: [hashicorp]
-    paths: ['packer/init/**']
+    paths: ['packer/init_image/**']
   workflow_dispatch:
 
 jobs:
