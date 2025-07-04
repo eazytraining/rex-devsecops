@@ -38,7 +38,7 @@ locals {
 }
 
 # Configuration du builder Amazon EBS
-source "amazon-ebs" "docker_image" {
+source "amazon-ebs" "k3s_image" {
   region          = var.aws_region
   source_ami      = data.amazon-ami.base_image.id
   ami_name        = local.ami_name
@@ -61,11 +61,11 @@ source "amazon-ebs" "docker_image" {
 
 # Définition du build
 build {
-  name    = "docker_image_build"
-  sources = ["source.amazon-ebs.docker_image"]
+  name    = "k3s_image_build"
+  sources = ["source.amazon-ebs.k3s_image"]
   # Provisioner: Script d'initialisation principal
   provisioner "shell" {
-    script          = "./packer/scripts/docker.sh"
+    script          = "./packer/scripts/k3s.sh"
     execute_command = "sudo -E -S sh '{{ .Path }}'"
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",

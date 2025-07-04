@@ -1,0 +1,111 @@
+# Packer artifacts
+*.box
+*.vmdk
+*.vdi
+*.qcow2
+*.raw
+*.img
+*.iso
+*.ova
+*.ovf
+*.vhd
+*.vhdx
+
+# Packer cache
+packer_cache/
+.packer/
+
+# Packer logs
+packer.log
+*.log
+
+# Packer temporary files
+packer-*
+*.tmp
+*.temp
+
+
+crash.log
+packer-crash-*
+# Build artifacts
+builds/
+output/
+output-*/
+manifest.json
+packer-manifest.json
+
+# Vagrant boxes (if using Vagrant post-processor)
+*.box
+.vagrant/
+
+# Credentials and sensitive files
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.csr
+secrets.json
+credentials.json
+vars.json
+sensitive-vars.json
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Terraform state files (if using Terraform with Packer)
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
+
+# Docker context (if building Docker images)
+.dockerignore
+
+# Ansible files (if using Ansible provisioner)
+*.retry
+.ansible/
+
+# SSH keys
+id_rsa
+id_rsa.pub
+*.pem
+*.ppk
+
+# Temporary build directories
+tmp/
+temp/
+
+# Packer plugins (if using custom plugins)
+packer-plugin-*
+
+# Cloud provider specific
+# AWS
+.aws/
+# Azure
+.azure/
+# GCP
+.gcp/
+service-account.json
+
+# Custom variables files
+local-vars.json
+override-vars.json

@@ -1,0 +1,23 @@
+---
+name: Build All Images
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * 1'  # Tous les lundis à 2h
+
+jobs:
+  build-base:
+    uses: ./.github/workflows/init_image.yml
+    secrets: inherit
+  
+  build-docker:
+    needs: build-base
+    if: success()
+    uses: ./.github/workflows/docker_image.yml
+    secrets: inherit
+
+  build-k3s:
+    needs: build-base
+    if: success()
+    uses: ./.github/workflows/k3s_image.yml
+    secrets: inherit
