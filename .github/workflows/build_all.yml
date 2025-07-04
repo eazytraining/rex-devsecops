@@ -1,9 +1,11 @@
 ---
 name: Build All Images
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 2 * * 1'  # Tous les lundis à 2h
+  push:
+    branches: [hashicorp]
+  # workflow_dispatch:
+  # schedule:
+  #   - cron: '0 2 * * 1'  # Tous les lundis à 2h
 
 jobs:
   build-base:
