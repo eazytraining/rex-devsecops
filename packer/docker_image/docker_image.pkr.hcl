@@ -65,7 +65,7 @@ build {
   sources = ["source.amazon-ebs.docker_image"]
   # Provisioner: Script d'initialisation principal
   provisioner "shell" {
-    script          = "./packer/scripts/docker.sh"
+    script          = "../scripts/docker.sh"
     execute_command = "sudo -E -S sh '{{ .Path }}'"
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",

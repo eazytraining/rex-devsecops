@@ -65,7 +65,7 @@ build {
   sources = ["source.amazon-ebs.k3s_image"]
   # Provisioner: Script d'initialisation principal
   provisioner "shell" {
-    script          = "./packer/scripts/k3s.sh"
+    script          = "../scripts/k3s.sh"
     execute_command = "sudo -E -S sh '{{ .Path }}'"
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
