@@ -3,7 +3,7 @@ name: Build Base Image
 on:
   push:
     branches: [hashicorp]
-    paths: ['packer/init_image/**']
+    paths: ['packer/**']
   workflow_dispatch:
 
 jobs:
@@ -44,3 +44,26 @@ jobs:
         with:
           name: base-manifest
           path: packer/base/manifest.json
+      - name: Trigger Docker Image Build
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'docker_image.yml',
+              ref: context.ref
+            })
+
+      - name: Trigger K3s Image Build
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'k3s_image.yml',
+              ref: context.ref
+            })
