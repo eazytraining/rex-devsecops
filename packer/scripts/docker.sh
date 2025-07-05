@@ -6,7 +6,7 @@ ENABLE_ZSH=true
 
 # Wait for cloud-init to finish
 echo "Waiting for cloud-init to complete..."
-sudo cloud-init status --wait || true
+# sudo cloud-init status --wait || true
 
 # Wait for any existing apt processes to finish
 echo "Waiting for apt processes to finish..."
