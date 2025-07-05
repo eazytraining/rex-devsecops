@@ -73,7 +73,7 @@ jobs:
 
   build-k3s:
     name: Build K3s Image
-    # needs: build-docker
+    needs: build-docker
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
