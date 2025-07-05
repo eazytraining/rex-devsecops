@@ -1,7 +1,7 @@
 variable "environment" {
   description = "Environment for the infrastructure"
   type        = string
-  default     = "dev"
+  default     = "docker" # Options: docker, kubernetes
 
 }
 
