@@ -1,0 +1,34 @@
+resource "aws_vpc" "rex_vpc" {
+  cidr_block       = var.rex_vpc_cidr_block
+  instance_tenancy = "default"
+
+  tags = {
+    Name = var.rex_vpc_name
+  }
+}
+
+resource "aws_subnet" "rex_subnet" {
+  vpc_id            = rex_vpc.id
+  cidr_block        = var.rex_subnet_cidr_block
+  availability_zone = var.rex_subnet_AZ
+  # map_public_ip_on_launch = true
+  tags = {
+    Name = var.rex_subnet_name
+  }
+}
+
+resource "aws_route_table" "rex_route_table" {
+  vpc_id = rex_vpc.id
+
+  tags = {
+    Name = var.rex_route_table_name
+  }
+}
+
+resource "aws_internet_gateway" "rex_igw" {
+  vpc_id = rex_vpc.id
+
+  tags = {
+    Name = var.rex_igw_name
+  }
+}
