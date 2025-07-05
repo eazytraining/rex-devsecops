@@ -27,7 +27,7 @@ variable "cidr_block" {
 variable "public_subnet_cidr" {
   description = "CIDR block for the public subnet"
   type        = string
-  default     = "10.1.0.0/24"
+  default     = "10.0.1.0/24"
 }
 
 variable "sg_ports" {
@@ -57,12 +57,12 @@ variable "number_of_worker" {
 variable "msr_volume_size" {
   description = "Volume size for the master node"
   type        = number
-  default     = 16
+  default     = 30
 
 }
 variable "worker_volume_size" {
   description = "Volume size for the worker nodes"
   type        = number
-  default     = 16
+  default     = 30
 
 }

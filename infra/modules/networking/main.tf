@@ -8,7 +8,7 @@ resource "aws_vpc" "rex_vpc" {
 }
 
 resource "random_shuffle" "az" {
-  input        = ["${var.region}a", "${var.region}b", "${var.region}c", "${var.region}d", "${var.region}e"]
+  input        = ["${var.region}a", "${var.region}b", "${var.region}c", "${var.region}d", "${var.region}f"]
   result_count = 1
 }
 

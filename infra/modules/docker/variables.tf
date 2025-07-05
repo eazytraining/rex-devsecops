@@ -33,11 +33,11 @@ variable "sg_name" {
   description = "Name of the security group to associate with the instances."
   default     = "rex-sg"
 }
-variable "az" {
-  type        = string
-  description = "Availability zone for the instances."
-  default     = "us-west-2a"
-}
+# variable "az" {
+#   type        = string
+#   description = "Availability zone for the instances."
+#   default     = "us-west-2a"
+# }
 variable "script" {
   type        = string
   description = "Script to run on the instances after creation."

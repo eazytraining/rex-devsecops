@@ -6,7 +6,7 @@ resource "aws_instance" "ec2_instance_msr" {
     associate_public_ip_address = true
     security_groups = [ var.security_groups_ids ]
     root_block_device {
-    volume_type = "gp2"
+    volume_type = "gp3"
     volume_size = var.msr_volume_size
     delete_on_termination = true
     }
@@ -25,7 +25,7 @@ resource "aws_instance" "ec2_instance_wrk" {
     associate_public_ip_address = true
     security_groups = [ var.security_groups_ids ]
     root_block_device {
-    volume_type = "gp2"
+    volume_type = "gp3"
     volume_size = var.worker_volume_size
     delete_on_termination = true
     }
