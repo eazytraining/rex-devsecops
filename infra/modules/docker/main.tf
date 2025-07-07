@@ -16,12 +16,11 @@ resource "aws_instance" "docker" {
   provisioner "remote-exec" {
     scripts = ["../scripts/${var.script}.sh"]
   }
-  # provisioner "local-exec" {
-  #   command = "echo IP: ${self.public_ip} > public_ip.txt"
-  # }
-  # provisioner "local-exec" {
-  #   command = "echo Public IP: ${self.public_ip} > ../docker_public_ip.txt"
-  # }
+  provisioner "local-exec" {
+    
+    command = "IP=${self.public_ip}; sed -i 's|MY_HOST_ADDRESS|${IP}/g' ../../ansible/playbook.yml"
+    interpreter = ["/bin/bash", "-c"]
+  }
   tags = {
     Name = var.instance_name
   }

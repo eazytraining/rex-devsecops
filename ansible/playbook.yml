@@ -11,8 +11,19 @@
     api_src_path: "{{ lookup('env','HOME') }}/deploy/recipe-api"
     frontend_src_path: "{{ lookup('env','HOME') }}/deploy/recipe-app"
     docker_version: "5:28.2.2-1~ubuntu.24.04~noble"
-    public_ip: "13.221.238.147"
-  
+    public_ip: "MY_HOST_ADDRESS"
+
+  pre_tasks:
+    - name: Vérifier si Docker est installé
+      command: docker --version
+      register: docker_check
+      failed_when: false
+      changed_when: false
+
+    - name: Installer Docker si nécessaire
+      include_role:
+        name: roles/docker-install
+      when: docker_check.rc != 0
 
   roles:
     - roles/installation

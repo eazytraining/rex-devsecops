@@ -1,9 +1,37 @@
 #!/bin/bash
 set -e  # Exit on any error
+echo "Waiting for cloud-init to complete..."
+sudo cloud-init status --wait || true
+
+# Wait for any existing apt processes to finish
+echo "Waiting for apt processes to finish..."
+while sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do
+    echo "Waiting for other apt processes to finish..."
+    sleep 5
+done
+
+# Wait for unattended-upgrades to finish
+sudo systemctl stop unattended-upgrades || true
+sudo killall unattended-upgrade-shutdown || true
+
+# Fix any interrupted dpkg operations
+echo "Fixing any interrupted dpkg operations..."
+sudo dpkg --configure -a || true
+
+# Clean up any stale lock files
+sudo rm -f /var/lib/dpkg/lock-frontend
+sudo rm -f /var/lib/dpkg/lock
+sudo rm -f /var/lib/apt/lists/lock
+sudo rm -f /var/cache/apt/archives/lock
+
+# Fix broken packages
+echo "Fixing broken packages..."
+sudo apt-get update || true
+sudo apt-get install -f -y || true
 
 # Add Docker's official GPG key:
 sudo apt-get update
-sudo apt-get install ca-certificates curl
+sudo apt-get install ca-certificates curl -y
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
