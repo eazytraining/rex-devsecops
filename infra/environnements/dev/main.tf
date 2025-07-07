@@ -1,9 +1,12 @@
 locals {
   region        = var.region
   env           = var.environment
-  ami_id_master = data.aws_ami.k8s_master_image.id
-  ami_id_worker = data.aws_ami.k8s_worker_image.id
-  ami_id_docker = data.aws_ami.docker_image.id
+  # ami_id_master = data.aws_ami.k8s_master_image.id
+  # ami_id_worker = data.aws_ami.k8s_worker_image.id
+  # ami_id_docker = data.aws_ami.docker_image.id
+  ami_id_master = data.aws_ami.ubuntu_24_04.id
+  ami_id_worker = data.aws_ami.ubuntu_24_04.id
+  ami_id_docker = data.aws_ami.ubuntu_24_04.id
   key_path      = "./keypair/${local.env}-key.pem"
   key_name      = "${local.env}-keypair"
 

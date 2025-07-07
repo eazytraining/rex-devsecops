@@ -22,6 +22,19 @@ data "amazon-ami" "base_image" {
   owners      = ["self"] # Important: seulement vos AMIs
   region      = var.aws_region
 }
+
+# data "amazon-ami" "base_image" {
+#   filters = {
+#     name                = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*" # Adaptez ce filtre
+#     architecture        = "x86_64"
+#     root-device-type    = "ebs"
+#     virtualization-type = "hvm"
+#   }
+
+#   most_recent = true
+#   owners      = ["099720109477"] # Important: seulement vos AMIs
+#   region      = var.aws_region
+# }
 # Locals pour les valeurs calculées
 locals {
   timestamp = formatdate("YYYYMMDD-hhmmss", timestamp())
@@ -50,7 +63,7 @@ source "amazon-ebs" "docker_image" {
   launch_block_device_mappings {
     device_name           = "/dev/sda1"
     volume_size           = var.root_volume_size
-    volume_type           = "gp3"
+    volume_type           = "gp2"
     delete_on_termination = true
     encrypted             = true
   }

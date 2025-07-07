@@ -49,7 +49,7 @@ source "amazon-ebs" "golden_image" {
   launch_block_device_mappings {
     device_name           = "/dev/sda1"
     volume_size           = var.root_volume_size
-    volume_type           = "gp3"
+    volume_type           = "gp2" # Utilisation de gp2 pour la compatibilité
     delete_on_termination = true
     encrypted             = true
   }
