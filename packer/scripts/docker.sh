@@ -1,7 +1,5 @@
 #!/bin/bash
 set -e  # Exit on any error
-echo "Waiting for cloud-init to complete..."
-sudo cloud-init status --wait || true
 
 # Wait for any existing apt processes to finish
 echo "Waiting for apt processes to finish..."
