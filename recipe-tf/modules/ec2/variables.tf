@@ -38,3 +38,7 @@ variable "user_data_path" {
 variable "subnet_id" {
   type = string
 }
+
+variable "aws_ami_id" {
+  type = string
+}
