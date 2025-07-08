@@ -1,4 +1,3 @@
-
 packer {
   required_version = ">= 1.9.2, < 2.0.0"
   required_plugins {
@@ -9,19 +8,20 @@ packer {
   }
 }
 
-# Data source pour l'AMI Ubuntu 22.04 LTS
-data "amazon-ami" "base_image" {
+# Data source pour l'AMI Ubuntu 20.04 LTS officielle
+data "amazon-ami" "ubuntu_20_04" {
   filters = {
-    name                = "rex-devsecops-docker*" # Adaptez ce filtre
+    name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
     architecture        = "x86_64"
     root-device-type    = "ebs"
     virtualization-type = "hvm"
   }
 
   most_recent = true
-  owners      = ["self"] # Important: seulement vos AMIs
+  owners      = ["099720109477"] # Canonical's AWS account ID
   region      = var.aws_region
 }
+
 # Locals pour les valeurs calculées
 locals {
   timestamp = formatdate("YYYYMMDD-hhmmss", timestamp())
@@ -31,8 +31,8 @@ locals {
     {
       "Name"       = local.ami_name
       "OS"         = "Ubuntu"
-      "OS_Version" = "22.04 LTS"
-      "SourceAMI"  = data.amazon-ami.base_image.id
+      "OS_Version" = "20.04 LTS"
+      "SourceAMI"  = data.amazon-ami.ubuntu_20_04.id
     }
   )
 }
@@ -40,11 +40,11 @@ locals {
 # Configuration du builder Amazon EBS
 source "amazon-ebs" "kube_master_image" {
   region          = var.aws_region
-  source_ami      = data.amazon-ami.base_image.id
+  source_ami      = data.amazon-ami.ubuntu_20_04.id
   ami_name        = local.ami_name
   ami_description = var.ami_description
   instance_type   = var.instance_type
-  ssh_username    = var.ssh_username
+  ssh_username    = "ubuntu" # Utilisateur par défaut pour Ubuntu
   ssh_timeout     = var.ssh_timeout
 
   launch_block_device_mappings {
@@ -63,6 +63,7 @@ source "amazon-ebs" "kube_master_image" {
 build {
   name    = "kube_master_image_build"
   sources = ["source.amazon-ebs.kube_master_image"]
+  
   # Provisioner: Script d'initialisation principal
   provisioner "shell" {
     script          = "../scripts/kube_master.sh"
@@ -72,15 +73,4 @@ build {
       "PACKER_BUILD=1"
     ]
   }
-
-  # Post-processor: Génération du manifeste
-  # post-processor "manifest" {
-  #   output     = "manifest.json"
-  #   strip_path = true
-  #   custom_data = {
-  #     build_date     = timestamp()
-  #     packer_version = packer.version
-  #     source_ami     = data.amazon-ami.ubuntu_22_04.id
-  #   }
-  # }
 }

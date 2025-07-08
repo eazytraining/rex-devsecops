@@ -8,7 +8,18 @@ packer {
     }
   }
 }
+# data "amazon-ami" "base_image" {
+#   filters = {
+#     name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+#     architecture        = "x86_64"
+#     root-device-type    = "ebs"
+#     virtualization-type = "hvm"
+#   }
 
+#   most_recent = true
+#   owners      = ["099720109477"] # Canonical's AWS account ID
+#   region      = var.aws_region
+# }
 # Data source pour l'AMI Ubuntu 22.04 LTS
 data "amazon-ami" "base_image" {
   filters = {

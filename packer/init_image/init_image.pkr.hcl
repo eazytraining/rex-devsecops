@@ -7,19 +7,45 @@ packer {
     }
   }
 }
-
-# Data source pour l'AMI Ubuntu 22.04 LTS
-data "amazon-ami" "ubuntu_22_04" {
+data "amazon-ami" "ubuntu_20_04" {
   filters = {
-    name                = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"
+    name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
     architecture        = "x86_64"
     root-device-type    = "ebs"
     virtualization-type = "hvm"
   }
+
   most_recent = true
-  owners      = [var.ami_owner]
+  owners      = ["099720109477"] # Canonical's AWS account ID
   region      = var.aws_region
 }
+
+
+# Data source pour l'AMI Ubuntu 22.04 LTS
+# data "amazon-ami" "ubuntu_20_04" {
+#   filters = {
+#     name                = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"
+#     architecture        = "x86_64"
+#     root-device-type    = "ebs"
+#     virtualization-type = "hvm"
+#   }
+#   most_recent = true
+#   owners      = [var.ami_owner]
+#   region      = var.aws_region
+# }
+
+# data "amazon-ami" "base_image" {
+#   filters = {
+#     name                = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*" # Adaptez ce filtre
+#     architecture        = "x86_64"
+#     root-device-type    = "ebs"
+#     virtualization-type = "hvm"
+#   }
+
+#   most_recent = true
+#   owners      = ["099720109477"] # Important: seulement vos AMIs
+#   region      = var.aws_region
+# }
 
 # Locals pour les valeurs calculées
 locals {
@@ -31,7 +57,7 @@ locals {
       "Name"       = local.ami_name
       "OS"         = "Ubuntu"
       "OS_Version" = "22.04 LTS"
-      "SourceAMI"  = data.amazon-ami.ubuntu_22_04.id
+      "SourceAMI"  = data.amazon-ami.ubuntu_20_04.id
     }
   )
 }
@@ -39,7 +65,7 @@ locals {
 # Configuration du builder Amazon EBS
 source "amazon-ebs" "golden_image" {
   region          = var.aws_region
-  source_ami      = data.amazon-ami.ubuntu_22_04.id
+  source_ami      = data.amazon-ami.ubuntu_20_04.id
   ami_name        = local.ami_name
   ami_description = var.ami_description
   instance_type   = var.instance_type
@@ -104,7 +130,7 @@ build {
     custom_data = {
       build_date     = timestamp()
       packer_version = packer.version
-      source_ami     = data.amazon-ami.ubuntu_22_04.id
+      source_ami     = data.amazon-ami.ubuntu_20_04.id
     }
   }
 }
