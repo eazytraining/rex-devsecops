@@ -9,16 +9,29 @@ packer {
 }
 
 # Data source pour l'AMI Ubuntu 20.04 LTS officielle
+# data "amazon-ami" "ubuntu_20_04" {
+#   filters = {
+#     name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+#     architecture        = "x86_64"
+#     root-device-type    = "ebs"
+#     virtualization-type = "hvm"
+#   }
+
+#   most_recent = true
+#   owners      = ["099720109477"] # Canonical's AWS account ID
+#   region      = var.aws_region
+# }
+
 data "amazon-ami" "ubuntu_20_04" {
   filters = {
-    name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+    name                = "rex-devsecops-*" # Adaptez ce filtre
     architecture        = "x86_64"
     root-device-type    = "ebs"
     virtualization-type = "hvm"
   }
 
   most_recent = true
-  owners      = ["099720109477"] # Canonical's AWS account ID
+  owners      = ["self"] # Important: seulement vos AMIs
   region      = var.aws_region
 }
 
