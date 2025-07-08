@@ -39,7 +39,7 @@ jobs:
   #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   #         PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}
 
-  # build-docker:
+  build-docker:
     name: Build Docker Image
     # needs: build-base
     runs-on: ubuntu-latest

@@ -33,7 +33,7 @@ data "amazon-ami" "base_image" {
   owners      = ["self"] # Important: seulement vos AMIs
   region      = var.aws_region
 }
-
+####
 # data "amazon-ami" "base_image" {
 #   filters = {
 #     name                = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*" # Adaptez ce filtre
