@@ -17,7 +17,7 @@ echo \
 # Fix any interrupted dpkg operations
 echo "Fixing any interrupted dpkg operations..."
 sudo dpkg --configure -a || true
-
+##
 # Clean up any stale lock files
 sudo rm -f /var/lib/dpkg/lock-frontend
 sudo rm -f /var/lib/dpkg/lock
