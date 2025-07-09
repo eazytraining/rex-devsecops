@@ -78,6 +78,11 @@ build {
 
   provisioner "shell" {
     scripts = ["../scripts/init.sh"]
+    execute_command = "sudo -E -S sh '{{ .Path }}'"
+    environment_vars = [
+      "DEBIAN_FRONTEND=noninteractive",
+      "PACKER_BUILD=1"
+    ]
   }
 
   post-processor "manifest" {

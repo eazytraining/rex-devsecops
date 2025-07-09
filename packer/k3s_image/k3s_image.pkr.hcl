@@ -12,7 +12,7 @@ packer {
 # Data source pour l'AMI Ubuntu 22.04 LTS
 data "amazon-ami" "base_image" {
   filters = {
-    name                = "init_rex_devsecops_*" # Adaptez ce filtre
+    name                = "rex-devsecops-*" # Adaptez ce filtre
     architecture        = "x86_64"
     root-device-type    = "ebs"
     virtualization-type = "hvm"

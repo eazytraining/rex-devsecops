@@ -10,7 +10,7 @@ packer {
 
 data "amazon-ami" "base_image" {
   filters = {
-    name                = "init_ubuntu_*" # Adaptez ce filtre
+    name                = "rex-devsecops-*" # Adaptez ce filtre
     architecture        = "x86_64"
     root-device-type    = "ebs"
     virtualization-type = "hvm"
@@ -65,6 +65,11 @@ build {
 
   provisioner "shell" {
     scripts = ["../scripts/docker.sh"]
+    execute_command = "sudo -E -S sh '{{ .Path }}'"
+    environment_vars = [
+      "DEBIAN_FRONTEND=noninteractive",
+      "PACKER_BUILD=1"
+    ]
   }
 
   post-processor "manifest" {

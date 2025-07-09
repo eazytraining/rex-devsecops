@@ -10,7 +10,7 @@ packer {
 
 data "amazon-ami" "docker" {
   filters = {
-    name                = "docker_ubuntu_*" # Adaptez ce filtre
+    name                = "rex-devsecops-*" # Adaptez ce filtre
     architecture        = "x86_64"
     root-device-type    = "ebs"
     virtualization-type = "hvm"
