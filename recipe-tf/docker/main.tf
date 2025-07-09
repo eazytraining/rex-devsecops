@@ -132,7 +132,7 @@ resource "null_resource" "output_metadata" {
       
       # Mise à jour de host.yml avec le bon chemin de clé privée
       PRIVATE_KEY_PATH="../.secrets/${module.keypair.key_name}.pem"
-      sed -i "s|ansible_ssh_private_key_file: .*|ansible_ssh_private_key_file: $PRIVATE_KEY_PATH|" ../ansible/host.yml
+      sed -i "s|ansible_ssh_private_key_file: .*|ansible_ssh_private_key_file: $PRIVATE_KEY_PATH|" ../../ansible/host.yml
     EOT
   }
 }
