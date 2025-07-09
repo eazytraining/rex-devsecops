@@ -6,19 +6,18 @@ packer {
     }
   }
 }
-data "aws_ami" "ubuntu_focal" {
-  most_recent = true
 
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
 
-  filter {
-    name   = "owner-id"
-    values = ["099720109477"]
-  }
+data "amazon-ami" "ubuntu_focal" {
+    filters = {
+        virtualization-type = "hvm"
+        name = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+        root-device-type = "ebs"
+    }
+    owners = ["099720109477"]
+    most_recent = true
 }
+
 locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 }
@@ -27,7 +26,7 @@ source "amazon-ebs" "init_ubuntu" {
   ami_name      = "init_ubuntu_${local.timestamp}"
   instance_type = "t2.medium"
   region        = "us-east-1"
-  source_ami    = data.aws_ami.ubuntu_focal.id
+  source_ami    = data.amazon-ami.ubuntu_focal.id
   ssh_username  = "ubuntu"
   launch_block_device_mappings {
     device_name           = "/dev/sda1"
