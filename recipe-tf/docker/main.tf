@@ -131,7 +131,7 @@ resource "null_resource" "output_metadata" {
       sed -i 's/public_ip: "MY_HOST_ADDRESS"/public_ip: $PUBLIC_IP/' ../../ansible/playbook.yml
       
       # Mise à jour de host.yml avec le bon chemin de clé privée
-      PRIVATE_KEY_PATH="../.secrets/${module.keypair.key_name}.pem"
+      PRIVATE_KEY_PATH="../recipe-tf/.secrets/${module.keypair.key_name}.pem"
       sed -i "s|ansible_ssh_private_key_file: .*|ansible_ssh_private_key_file: $PRIVATE_KEY_PATH|" ../../ansible/host.yml
     EOT
   }
