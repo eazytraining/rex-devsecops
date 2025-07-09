@@ -26,7 +26,6 @@ source "amazon-ebs" "rex_devsecops" {
   ami_name      = "init_rex_devsecops_${local.timestamp}"
   instance_type = var.instance_type
   ami_description = "Golden Image REX-DevSecOps avec configurations de base"
-  ami_prefix = var.ami_prefix
   region        = var.aws_region
   source_ami    = data.amazon-ami.ubuntu_focal.id
   ssh_username  = var.ssh_username
