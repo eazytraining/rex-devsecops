@@ -22,26 +22,28 @@ locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 }
 
-source "amazon-ebs" "init_ubuntu" {
-  ami_name      = "init_ubuntu_${local.timestamp}"
-  instance_type = "t2.medium"
-  region        = "us-east-1"
+source "amazon-ebs" "rex_devsecops" {
+  ami_name      = "init_rex_devsecops_${local.timestamp}"
+  instance_type = var.instance_type
+  ami_description = "Golden Image REX-DevSecOps avec configurations de base"
+  ami_prefix = var.ami_prefix
+  region        = var.aws_region
   source_ami    = data.amazon-ami.ubuntu_focal.id
-  ssh_username  = "ubuntu"
+  ssh_username  = var.ssh_username
   launch_block_device_mappings {
     device_name           = "/dev/sda1"
-    volume_size           = 20
+    volume_size           = var.root_volume_size
     volume_type           = "gp2"
     delete_on_termination = true
   }
   tags = {
-    project = "aws_labs_project"
+    project = "rex_devsecops_project"
   }
 }
 
 build {
-  name    = "init_ubuntu"
-  sources = ["source.amazon-ebs.init_ubuntu"]
+  name    = "rex_devsecops"
+  sources = ["source.amazon-ebs.rex_devsecops"]
 
   provisioner "file" {
     source      = "./defaults.cfg"

@@ -12,7 +12,7 @@ packer {
 # Data source pour l'AMI Ubuntu 22.04 LTS
 data "amazon-ami" "base_image" {
   filters = {
-    name                = "init_ubuntu_*" # Adaptez ce filtre
+    name                = "init_rex_devsecops_*" # Adaptez ce filtre
     architecture        = "x86_64"
     root-device-type    = "ebs"
     virtualization-type = "hvm"
@@ -72,15 +72,13 @@ build {
       "PACKER_BUILD=1"
     ]
   }
-
-  # Post-processor: Génération du manifeste
-  # post-processor "manifest" {
-  #   output     = "manifest.json"
-  #   strip_path = true
-  #   custom_data = {
-  #     build_date     = timestamp()
-  #     packer_version = packer.version
-  #     source_ami     = data.amazon-ami.ubuntu_22_04.id
-  #   }
-  # }
+  post-processor "manifest" {
+    output     = "manifest.json"
+    strip_path = true
+    custom_data = {
+      build_date     = timestamp()
+      packer_version = packer.version
+      source_ami     = data.amazon-ami.ubuntu_22_04.id
+    }
+  }
 }

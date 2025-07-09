@@ -73,66 +73,66 @@ jobs:
           AWS_REGION: "us-east-1"
           PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}
 
-  # build-k3s:
-  #   name: Build K3s Image
-  #   needs: build-docker
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
+  build-k3s:
+    name: Build K3s Image
+    needs: build-base
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - name: Setup Packer
-  #       uses: hashicorp/setup-packer@main
-  #       with:
-  #         version: "1.9.4"
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: "1.9.4"
 
-  #     - name: Build K3s Image
-  #       run: |
-  #         cd packer/k3s_image
-  #         packer init .
-  #         packer build  .
-  #       env:
-  #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}
-  # build-k8s-master:
-  #   name: Build kube Master Image
-  #   needs: build-docker
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
+      - name: Build K3s Image
+        run: |
+          cd packer/k3s_image
+          packer init .
+          packer build  .
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}
+  build-k8s-master:
+    name: Build kube Master Image
+    needs: build-docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - name: Setup Packer
-  #       uses: hashicorp/setup-packer@main
-  #       with:
-  #         version: "1.9.4"
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: "1.9.4"
 
-  #     - name: Build kube Master Image
-  #       run: |
-  #         cd packer/kube_master_image
-  #         packer init .
-  #         packer build  .
-  #       env:
-  #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}
-  # build-k8s-worker:
-  #   name: Build kube Worker Image
-  #   needs: build-docker
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
+      - name: Build kube Master Image
+        run: |
+          cd packer/kube_master_image
+          packer init .
+          packer build  .
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}
+  build-k8s-worker:
+    name: Build kube Worker Image
+    needs: build-docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - name: Setup Packer
-  #       uses: hashicorp/setup-packer@main
-  #       with:
-  #         version: "1.9.4"
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: "1.9.4"
 
-  #     - name: Build kube Worker Image
-  #       run: |
-  #         cd packer/kube_worker_image
-  #         packer init .
-  #         packer build  .
-  #       env:
-  #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}
+      - name: Build kube Worker Image
+        run: |
+          cd packer/kube_worker_image
+          packer init .
+          packer build  .
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}

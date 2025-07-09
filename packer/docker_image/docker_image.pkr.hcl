@@ -24,8 +24,8 @@ locals {
 }
 
 
-source "amazon-ebs" "docker_ubuntu" {
-  ami_name      = "docker_ubuntu_${local.timestamp}"
+source "amazon-ebs" "docker_rex_devsecops" {
+  ami_name      = "docker_rex_devsecops_${local.timestamp}"
   instance_type = "t2.medium"
   region        = "us-east-1"
   source_ami    = data.amazon-ami.base_image.id # Here Use the AMI ID provided by init image Build
@@ -42,10 +42,17 @@ source "amazon-ebs" "docker_ubuntu" {
 }
 
 build {
-  name    = "docker_ubuntu"
-  sources = ["source.amazon-ebs.docker_ubuntu"]
+  name    = "docker_rex_devsecops"
+  sources = ["source.amazon-ebs.docker_rex_devsecops"]
 
   provisioner "shell" {
     scripts = ["../scripts/docker.sh"]
+  }
+  post-processor "manifest" {
+    output = "manifest.json"
+    strip_path = true
+    custom_data = {
+      build_time = timestamp()
+    }
   }
 }
