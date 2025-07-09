@@ -41,7 +41,7 @@ jobs:
 
   build-docker:
     name: Build Docker Image
-    # needs: build-base
+    needs: build-base
     runs-on: ubuntu-latest
     outputs:
       image-id: ${{ steps.build.outputs.image-id }}
