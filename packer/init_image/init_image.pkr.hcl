@@ -62,4 +62,12 @@ build {
   provisioner "shell" {
     scripts = ["../scripts/init.sh"]
   }
+
+  post-processor "manifest" {
+    output = "manifest.json"
+    strip_path = true
+    custom_data = {
+      build_time = timestamp()
+    }
+  }
 }
