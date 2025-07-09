@@ -20,4 +20,4 @@ sudo apt-get install docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING con
 sudo systemctl start docker
 sudo systemctl enable docker
 sudo usermod -aG docker ubuntu
-sudo echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables

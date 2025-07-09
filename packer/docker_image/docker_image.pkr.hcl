@@ -8,7 +8,7 @@ packer {
 }
 data "amazon-ami" "base_image" {
   filters = {
-    name                = "rex-devsecops-*" # Adaptez ce filtre
+    name                = "init_ubuntu_*" # Adaptez ce filtre
     architecture        = "x86_64"
     root-device-type    = "ebs"
     virtualization-type = "hvm"
