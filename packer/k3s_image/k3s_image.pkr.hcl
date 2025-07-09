@@ -78,7 +78,7 @@ build {
     custom_data = {
       build_date     = timestamp()
       packer_version = packer.version
-      source_ami     = data.amazon-ami.ubuntu_22_04.id
+      source_ami     = data.amazon-ami.base_image.id
     }
   }
 }

@@ -31,7 +31,7 @@ locals {
       "Name"       = local.ami_name
       "OS"         = "Ubuntu"
       "OS_Version" = "20.04 LTS"
-      "SourceAMI"  = data.amazon-ami.docker_ubuntu.id
+      "SourceAMI"  = data.amazon-ami.docker.id
     }
   )
 }
@@ -39,7 +39,7 @@ locals {
 # Configuration du builder Amazon EBS
 source "amazon-ebs" "kube_worker_image" {
   region          = var.aws_region
-  source_ami      = data.amazon-ami.docker_ubuntu.id
+  source_ami      = data.amazon-ami.docker.id
   ami_name        = local.ami_name
   ami_description = var.ami_description
   instance_type   = var.instance_type
@@ -72,7 +72,7 @@ build {
       "PACKER_BUILD=1"
     ]
   }
-    post-processor "manifest" {
+  post-processor "manifest" {
     output = "manifest.json"
     strip_path = true
     custom_data = {
