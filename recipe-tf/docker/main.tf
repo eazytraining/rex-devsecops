@@ -44,41 +44,41 @@ module "sg" {
 
 module "keypair" {
   source           = "../modules/keypair"
-  key_name         = "recipe-docker"
+  key_name         = "recipe-keypair"
   private_key_path = "../.secrets/${module.keypair.key_name}.pem"
 }
 
-# data "aws_ami" "rex_devsecops" {
-#   most_recent = true
-#   owners      = ["767397965014"] # ou "self" si tu utilises ton propre compte
-
-#   filter {
-#     name   = "name"
-#     values = ["rex-devsecops-docker-*"]
-#   }
-# }
-
-data "aws_ami" "ubuntu" {
+data "aws_ami" "rex_devsecops" {
   most_recent = true
+  owners      = ["381491904060"] # ou "self" si tu utilises ton propre compte
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+    values = ["rex-devsecops-docker*"]
   }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
 }
+
+# data "aws_ami" "ubuntu" {
+#   most_recent = true
+
+#   filter {
+#     name   = "name"
+#     values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+#   }
+
+#   filter {
+#     name   = "virtualization-type"
+#     values = ["hvm"]
+#   }
+
+#   owners = ["099720109477"] # Canonical
+# }
 
 module "recipe_ec2" {
   depends_on    = [module.sg, module.keypair]
   source        = "../modules/ec2"
   subnet_id     = module.public_subnet.subnet_id
-  aws_ami_id    = data.aws_ami.ubuntu.id
+  aws_ami_id    = data.aws_ami.rex_devsecops.id
   instance_type = "t3.medium"
   aws_common_tag = {
     Name = "recipe_ec2"
@@ -123,5 +123,10 @@ resource "null_resource" "output_metadata" {
   
   provisioner "local-exec" {
     command = "echo recipe PUBLIC_IP: ${module.recipe_eip.public_ip} - recipe PUBLIC_DNS: ${module.recipe_eip.public_dns}  >> recipe_ec2.txt"
+  }
+  provisioner "local-exec" {
+    command = <<EOT
+      sed -i 's/public_ip: "MY_HOST_ADDRESS"/public_ip: "${module.recipe_eip.public_ip}"/' ../../ansible/playbook.yml
+    EOT
   }
 }
