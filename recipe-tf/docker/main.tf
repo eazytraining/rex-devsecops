@@ -127,8 +127,7 @@ resource "null_resource" "output_metadata" {
   provisioner "local-exec" {
     command = <<EOT
       # Mise à jour de playbook.yml avec l'adresse IP publique
-      PUBLIC_IP="${module.recipe_eip.public_ip}"
-      sed -i 's/public_ip: "MY_HOST_ADDRESS"/public_ip: $PUBLIC_IP/' ../../ansible/playbook.yml
+      sed -i 's/public_ip: "MY_HOST_ADDRESS"/public_ip: ${module.recipe_eip.public_ip}/' ../../ansible/playbook.yml
       
       # Mise à jour de host.yml avec le bon chemin de clé privée
       PRIVATE_KEY_PATH="../recipe-tf/.secrets/${module.keypair.key_name}.pem"
