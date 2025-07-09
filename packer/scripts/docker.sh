@@ -1,5 +1,6 @@
 #!/bin/bash
-set -e  # Exit on any error
+VERSION_STRING="5:20.10.0~3-0~ubuntu-focal"
+ENABLE_ZSH=true
 
 # Add Docker's official GPG key:
 sudo apt-get update
@@ -11,37 +12,12 @@ sudo chmod a+r /etc/apt/keyrings/docker.asc
 # Add the repository to Apt sources:
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-# Fix any interrupted dpkg operations
-echo "Fixing any interrupted dpkg operations..."
-sudo dpkg --configure -a || true
-##
-# Clean up any stale lock files
-sudo rm -f /var/lib/dpkg/lock-frontend
-sudo rm -f /var/lib/dpkg/lock
-sudo rm -f /var/lib/apt/lists/lock
-sudo rm -f /var/cache/apt/archives/lock
-
-# Fix broken packages
-echo "Fixing broken packages..."
-sudo apt-get update || true
-sudo apt-get install -f -y || true
 sudo apt-get update
-
-VERSION_STRING=5:28.2.2-1~ubuntu.24.04~noble
-# Install Docker packages
-sudo apt-get install -y \
-    docker-ce=$VERSION_STRING \
-    docker-ce-cli=$VERSION_STRING \
-    containerd.io \
-    docker-buildx-plugin \
-    docker-compose-plugin -y
-
-# Start and enable Docker service
+sudo apt-get install docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING containerd.io docker-buildx-plugin docker-compose-plugin -y
 sudo systemctl start docker
 sudo systemctl enable docker
-
-# Add ubuntu user to docker group
 sudo usermod -aG docker ubuntu
+sudo echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
