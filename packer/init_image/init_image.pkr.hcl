@@ -7,45 +7,16 @@ packer {
     }
   }
 }
-data "amazon-ami" "ubuntu_20_04" {
-  filters = {
-    name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
-    architecture        = "x86_64"
-    root-device-type    = "ebs"
-    virtualization-type = "hvm"
-  }
 
-  most_recent = true
-  owners      = ["099720109477"] # Canonical's AWS account ID
-  region      = var.aws_region
+data "amazon-ami" "ubuntu_focal" {
+    filters = {
+      virtualization-type = "hvm"
+      name = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+      root-device-type = "ebs"
+    }
+    owners = ["099720109477"]
+    most_recent = true
 }
-
-
-# Data source pour l'AMI Ubuntu 22.04 LTS
-# data "amazon-ami" "ubuntu_20_04" {
-#   filters = {
-#     name                = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"
-#     architecture        = "x86_64"
-#     root-device-type    = "ebs"
-#     virtualization-type = "hvm"
-#   }
-#   most_recent = true
-#   owners      = [var.ami_owner]
-#   region      = var.aws_region
-# }
-
-# data "amazon-ami" "base_image" {
-#   filters = {
-#     name                = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*" # Adaptez ce filtre
-#     architecture        = "x86_64"
-#     root-device-type    = "ebs"
-#     virtualization-type = "hvm"
-#   }
-
-#   most_recent = true
-#   owners      = ["099720109477"] # Important: seulement vos AMIs
-#   region      = var.aws_region
-# }
 
 # Locals pour les valeurs calculées
 locals {
@@ -56,16 +27,16 @@ locals {
     {
       "Name"       = local.ami_name
       "OS"         = "Ubuntu"
-      "OS_Version" = "22.04 LTS"
-      "SourceAMI"  = data.amazon-ami.ubuntu_20_04.id
+      "OS_Version" = "20.04 LTS"
+      "SourceAMI"  = data.amazon-ami.ubuntu_focal.id
     }
   )
 }
 
 # Configuration du builder Amazon EBS
-source "amazon-ebs" "golden_image" {
+source "amazon-ebs" "init_image" {
   region          = var.aws_region
-  source_ami      = data.amazon-ami.ubuntu_20_04.id
+  source_ami      = data.amazon-ami.ubuntu_focal.id
   ami_name        = local.ami_name
   ami_description = var.ami_description
   instance_type   = var.instance_type
@@ -75,7 +46,7 @@ source "amazon-ebs" "golden_image" {
   launch_block_device_mappings {
     device_name           = "/dev/sda1"
     volume_size           = var.root_volume_size
-    volume_type           = "gp2" # Utilisation de gp2 pour la compatibilité
+    volume_type           = "gp2"
     delete_on_termination = true
     encrypted             = true
   }
@@ -86,36 +57,27 @@ source "amazon-ebs" "golden_image" {
 
 # Définition du build
 build {
-  name    = "golden_image_build"
-  sources = ["source.amazon-ebs.golden_image"]
-
-  # Provisioner: Fichier de configuration cloud-init
-  provisioner "file" {
+  name    = "init_image_build"
+  sources = ["source.amazon-ebs.init_image"]
+  
+   provisioner "file" {
     source      = "./defaults.cfg"
     destination = "/tmp/defaults.cfg"
   }
-
-  # Provisioner: Message du jour
   provisioner "file" {
-    source      = "./motd"
+    source      = "../scripts/motd"
     destination = "/tmp/motd"
   }
 
-  # Provisioner: Application des configurations
   provisioner "shell" {
     inline = [
-      "sudo mv -f /tmp/defaults.cfg /etc/cloud/cloud.cfg.d/99_defaults.cfg",
-      "sudo chmod 644 /etc/cloud/cloud.cfg.d/99_defaults.cfg",
-      "sudo chown root:root /etc/cloud/cloud.cfg.d/99_defaults.cfg",
-      "sudo mv -f /tmp/motd /etc/motd",
-      "sudo chmod 644 /etc/motd",
-      "sudo chown root:root /etc/motd"
+      "sudo mv /tmp/defaults.cfg /etc/cloud/cloud.cfg.d/defaults.cfg",
+      "sudo mv /tmp/motd /etc/motd"
     ]
   }
 
-  # Provisioner: Script d'initialisation principal
   provisioner "shell" {
-    script          = "../scripts/init_image.sh"
+    scripts = ["../scripts/init.sh"]
     execute_command = "sudo -E -S sh '{{ .Path }}'"
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
@@ -123,14 +85,11 @@ build {
     ]
   }
 
-  # Post-processor: Génération du manifeste
   post-processor "manifest" {
-    output     = "manifest.json"
+    output = "manifest.json"
     strip_path = true
     custom_data = {
-      build_date     = timestamp()
-      packer_version = packer.version
-      source_ami     = data.amazon-ami.ubuntu_20_04.id
+      build_time = timestamp()
     }
   }
 }

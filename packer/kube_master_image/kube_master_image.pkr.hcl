@@ -8,21 +8,7 @@ packer {
   }
 }
 
-# Data source pour l'AMI Ubuntu 20.04 LTS officielle
-# data "amazon-ami" "ubuntu_20_04" {
-#   filters = {
-#     name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
-#     architecture        = "x86_64"
-#     root-device-type    = "ebs"
-#     virtualization-type = "hvm"
-#   }
-
-#   most_recent = true
-#   owners      = ["099720109477"] # Canonical's AWS account ID
-#   region      = var.aws_region
-# }
-
-data "amazon-ami" "ubuntu_20_04" {
+data "amazon-ami" "docker" {
   filters = {
     name                = "rex-devsecops-*" # Adaptez ce filtre
     architecture        = "x86_64"
@@ -45,7 +31,7 @@ locals {
       "Name"       = local.ami_name
       "OS"         = "Ubuntu"
       "OS_Version" = "20.04 LTS"
-      "SourceAMI"  = data.amazon-ami.ubuntu_20_04.id
+      "SourceAMI"  = data.amazon-ami.docker.id
     }
   )
 }
@@ -53,7 +39,7 @@ locals {
 # Configuration du builder Amazon EBS
 source "amazon-ebs" "kube_master_image" {
   region          = var.aws_region
-  source_ami      = data.amazon-ami.ubuntu_20_04.id
+  source_ami      = data.amazon-ami.docker.id
   ami_name        = local.ami_name
   ami_description = var.ami_description
   instance_type   = var.instance_type
@@ -85,5 +71,12 @@ build {
       "DEBIAN_FRONTEND=noninteractive",
       "PACKER_BUILD=1"
     ]
+  }
+  post-processor "manifest" {
+    output = "manifest.json"
+    strip_path = true
+    custom_data = {
+      build_time = timestamp()
+    }
   }
 }

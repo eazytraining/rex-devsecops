@@ -31,7 +31,7 @@ locals {
     {
       "Name"       = local.ami_name
       "OS"         = "Ubuntu"
-      "OS_Version" = "22.04 LTS"
+      "OS_Version" = "20.04 LTS"
       "SourceAMI"  = data.amazon-ami.base_image.id
     }
   )
@@ -72,15 +72,13 @@ build {
       "PACKER_BUILD=1"
     ]
   }
-
-  # Post-processor: Génération du manifeste
-  # post-processor "manifest" {
-  #   output     = "manifest.json"
-  #   strip_path = true
-  #   custom_data = {
-  #     build_date     = timestamp()
-  #     packer_version = packer.version
-  #     source_ami     = data.amazon-ami.ubuntu_22_04.id
-  #   }
-  # }
+  post-processor "manifest" {
+    output     = "manifest.json"
+    strip_path = true
+    custom_data = {
+      build_date     = timestamp()
+      packer_version = packer.version
+      source_ami     = data.amazon-ami.base_image.id
+    }
+  }
 }

@@ -11,6 +11,8 @@
 *.vhd
 *.vhdx
 
+manifest.json.lock
+manifest.json
 # Packer cache
 packer_cache/
 .packer/
