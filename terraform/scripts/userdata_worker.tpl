@@ -6,6 +6,12 @@ set -e
 # Installer dépendances 
 apt update && apt install -y git curl ansible 
  
+until curl -k https://${MASTER_IP}:6443/healthz; do
+  echo "Waiting for Kubernetes API server..."
+  sleep 10
+done
+echo "Kubernetes API server is ready. Proceeding with kubeadm join."
+
 # Récupérer le code 
 rm -rf cka-stack || echo "previous folder removed"
 git clone -b ubuntu-aws https://github.com/OlivierKouokam/review-cka-stack.git cka-stack 
