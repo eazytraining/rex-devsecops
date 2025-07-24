@@ -17,3 +17,8 @@ variable "worker_count" {
   type = number
   default = 2
 }
+
+variable "kubernetes_version" {
+  type    = string
+  default = "1.31"
+}

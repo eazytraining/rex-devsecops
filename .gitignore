@@ -83,6 +83,8 @@ terraform.tfstate.backup
 terraform.tfplan
 terraform.tfstate.lock.info
 .terraform.lock.hcl
+**/.secrets
+**/*.pem
 
 # Docker context (if building Docker images)
 .dockerignore
@@ -116,3 +118,4 @@ service-account.json
 # Custom variables files
 local-vars.json
 override-vars.json
+

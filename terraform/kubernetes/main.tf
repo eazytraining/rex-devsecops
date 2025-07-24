@@ -25,6 +25,7 @@ module "recipe_igw_route_table" {
 }
 
 resource "aws_route" "internet_access" {
+  depends_on = [module.recipe_igw]
   route_table_id         = module.recipe_igw_route_table.route_table_id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = module.recipe_igw.igw_id
@@ -48,13 +49,33 @@ module "keypair" {
   private_key_path = "../.secrets/${module.keypair.key_name}.pem"
 }
 
-data "aws_ami" "rex_devsecops_master" {
+# data "aws_ami" "rex_devsecops_master" {
+#   most_recent = true
+#   owners      = ["767397965014"] # ou "self" si tu utilises ton propre compte
+
+#   filter {
+#     name   = "name"
+#     values = ["rex-devsecops-master-*"]
+#   }
+# }
+
+data "aws_ami" "ubuntu_22" {
   most_recent = true
-  owners      = ["767397965014"] # ou "self" si tu utilises ton propre compte
+  owners      = ["099720109477"] # Canonical
 
   filter {
     name   = "name"
-    values = ["rex-devsecops-master-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
   }
 }
 
@@ -62,7 +83,7 @@ module "recipe_master_ec2" {
   depends_on    = [module.sg, module.keypair]
   source        = "../modules/ec2"
   subnet_id     = module.public_subnet.subnet_id
-  aws_ami_id = data.aws_ami.rex_devsecops_master.id
+  aws_ami_id = data.aws_ami.ubuntu_22.id
   instance_type = "t3.medium"
   aws_common_tag = {
     Name = "recipe_master_ec2"
@@ -71,29 +92,26 @@ module "recipe_master_ec2" {
   security_group_ids = [module.sg.aws_sg_id]
   # security_groups = [module.sg.aws_sg_name]
   private_key    = module.keypair.private_key
-  user_data_path = "../scripts/userdata_master.sh"
-  # user_data_path = templatefile("../scripts/userdata_master.tpl", {
-  #   kubernetes_role                    = "control_plane"
-  #   kubernetes_apiserver_advertise_address = module.recipe_master_ec2.private_ip
-  # })
+  user_data_path = file("../scripts/userdata_master.sh")
+  # user_data_path = templatefile("../scripts/userdata_master.tpl")
 }
 
-data "aws_ami" "rex_devsecops_worker" {
-  most_recent = true
-  owners      = ["767397965014"] # ou "self" si tu utilises ton propre compte
+# data "aws_ami" "rex_devsecops_worker" {
+#   most_recent = true
+#   owners      = ["767397965014"] # ou "self" si tu utilises ton propre compte
 
-  filter {
-    name   = "name"
-    values = ["rex-devsecops-worker-*"]
-  }
-}
+#   filter {
+#     name   = "name"
+#     values = ["rex-devsecops-worker-*"]
+#   }
+# }
 
 module "recipe_worker_ec2" {
   count = var.worker_count
   depends_on    = [module.sg, module.keypair, module.recipe_master_ec2]
   source        = "../modules/ec2"
   subnet_id     = module.public_subnet.subnet_id
-  aws_ami_id = data.aws_ami.rex_devsecops_worker.id
+  aws_ami_id = data.aws_ami.ubuntu_22.id
   instance_type = "t3.medium"
   aws_common_tag = {
     Name = "recipe_worker_ec2_${count.index + 1}"
@@ -102,10 +120,11 @@ module "recipe_worker_ec2" {
   security_group_ids = [module.sg.aws_sg_id]
   # security_groups = [module.sg.aws_sg_name]
   private_key    = module.keypair.private_key
-  user_data_path = "../scripts/userdata_worker.sh"
-  # user_data_path = templatefile("../scripts/userdata_worker.tpl", {
-  #   kubernetes_apiserver_advertise_address = module.recipe_master_ec2.private_ip
-  # })
+  # user_data_path = "../scripts/userdata_worker.sh"
+  user_data_path = templatefile("../scripts/userdata_worker.tpl", {
+    MASTER_IP = module.recipe_master_ec2.private_ip
+    KUBERNETES_VERSION = var.kubernetes_version
+  })
 }
 
 module "recipe_master_eip" {
@@ -121,7 +140,7 @@ module "recipe_master_ebs" {
   AZ     = var.recipe_AZ
   size   = 20
   ebs_tag = {
-    Name = "recipe_worker_ebs"
+    Name = "recipe_master_ebs"
   }
 }
 

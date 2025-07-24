@@ -1,0 +1,2 @@
+recipe_master PUBLIC_IP: 13.216.207.63 - recipe_master PUBLIC_DNS: ec2-13-216-207-63.compute-1.amazonaws.com  
+recipe_master PUBLIC_IP: 34.206.89.185 - recipe_master PUBLIC_DNS: ec2-34-206-89-185.compute-1.amazonaws.com  

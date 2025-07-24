@@ -8,7 +8,8 @@ resource "aws_instance" "webserver" {
   # associate_public_ip_address = true
   tags            = var.aws_common_tag
 
-  user_data = file(var.user_data_path)
+  # user_data = file(var.user_data_path)
+  user_data = var.user_data_path
 
   # "sudo amazon-linux-extras install -y nginx1.12",
   /*
