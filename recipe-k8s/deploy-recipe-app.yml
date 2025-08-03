@@ -18,11 +18,11 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: olivierkkoc/recipe-app:demo
+      - image: olivierkkoc/recipe-frontend:demo
         name: recipe-app
         env:
         - name: API_URL
-          value: localhost
+          value: http://recipe-api:5173
         ports:
         - containerPort: 80
           name: app-port

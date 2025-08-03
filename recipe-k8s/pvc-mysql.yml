@@ -5,7 +5,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: nfs-dynamic
+    # - ReadWriteMany        # NFS supporte plusieurs accès en lecture/écriture
+  storageClassName: example-nfs
   resources:
     requests:
       storage: 5Gi
