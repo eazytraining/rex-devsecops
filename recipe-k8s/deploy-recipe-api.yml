@@ -10,7 +10,7 @@ spec:
       app: recipe
       tier: backend
   strategy:
-    type: Recreate
+    type: RollingUpdate
   template:
     metadata:
       labels:
