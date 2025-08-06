@@ -10,7 +10,7 @@ spec:
       app: recipe
       tier: bdd
   strategy:
-    type: Recreate
+    type: RollingUpdate
   template:
     metadata:
       labels:
