@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       #- image: olivierkkoc/recipe-frontend:demo
-      - image: blondel/frontend      
+      - image: blondel/frontend:v1
         name: recipe-app
         env:
         - name: API_URL
