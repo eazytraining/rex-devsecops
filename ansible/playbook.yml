@@ -13,6 +13,7 @@
     docker_version: "5:28.2.2-1~ubuntu.24.04~noble"
     public_ip: "MY_HOST_ADDRESS"
     dockerhub_username: "votre_username_dockerhub"
+    ## ansible-vault encrypt_string 'votre_mot_de_passe' --name 'vault_dockerhub_password'
     dockerhub_password: "{{ vault_dockerhub_password }}"
 
 
