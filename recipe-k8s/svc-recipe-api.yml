@@ -9,7 +9,7 @@ spec:
     - name: http
       port: 8080
       targetPort: 8080
-      nodePort: 30080
+      nodePort: 30088
     - name: https
       port: 8443
       targetPort: 8443
