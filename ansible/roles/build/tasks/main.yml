@@ -32,3 +32,39 @@
         built_by: "ansible"
     source: build
     force_source: true
+
+
+# Authentification Docker Hub (à faire une seule fois)
+- name: Se connecter à Docker Hub
+  community.docker.docker_login:
+    username: "{{ dockerhub_username }}"
+    password: "{{ dockerhub_password }}"
+  no_log: true  # évite d'afficher le mot de passe dans les logs
+
+# Tagging des images pour Docker Hub
+- name: Taguer l'image API pour Docker Hub
+  community.docker.docker_image:
+    name: "api:{{ tag_api }}"
+    repository: "{{ dockerhub_username }}/api:{{ tag_api }}"
+    source: local
+    force_tag: true
+
+- name: Taguer l'image frontend pour Docker Hub
+  community.docker.docker_image:
+    name: "frontend:{{ tag_front }}"
+    repository: "{{ dockerhub_username }}/frontend:{{ tag_front }}"
+    source: local
+    force_tag: true
+
+# Push vers Docker Hub
+- name: Pousser l'image API vers Docker Hub
+  community.docker.docker_image:
+    name: "{{ dockerhub_username }}/api:{{ tag_api }}"
+    push: true
+    source: local
+
+- name: Pousser l'image frontend vers Docker Hub
+  community.docker.docker_image:
+    name: "{{ dockerhub_username }}/frontend:{{ tag_front }}"
+    push: true
+    source: local
