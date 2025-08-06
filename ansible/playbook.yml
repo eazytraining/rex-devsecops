@@ -12,6 +12,9 @@
     frontend_src_path: "{{ lookup('env','HOME') }}/deploy/recipe-app"
     docker_version: "5:28.2.2-1~ubuntu.24.04~noble"
     public_ip: "MY_HOST_ADDRESS"
+    dockerhub_username: "votre_username_dockerhub"
+    dockerhub_password: "{{ vault_dockerhub_password }}"
+
 
   pre_tasks:
     - name: Vérifier si Docker est installé
