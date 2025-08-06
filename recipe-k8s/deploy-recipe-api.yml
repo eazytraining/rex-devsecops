@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       #- image: olivierkkoc/recipe-backend:demo
-      - image: blondel/api      
+      - image: blondel/api:v1
         name: recipe-api
         env:        
         - name: SPRING_DATASOURCE_URL
