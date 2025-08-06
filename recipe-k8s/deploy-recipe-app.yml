@@ -23,7 +23,7 @@ spec:
         name: recipe-app
         env:
         - name: API_URL
-          value: http://recipe-api:5173
+          value: https://54.152.219.126:30443
         ports:
         - containerPort: 80
           name: app-port
