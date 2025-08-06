@@ -6,9 +6,9 @@ metadata:
     app: recipe
 spec:
   ports:
-    - port: 8080
-      targetPort: 8080
-      nodePort: 30088
+    - port: 8443
+      targetPort: 8443
+      nodePort: 30443
   selector:
     app: recipe
     tier: backend
