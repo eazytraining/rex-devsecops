@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: recipe-frontend-config
+data:
+  API_URL: "https://54.152.219.126:30443"

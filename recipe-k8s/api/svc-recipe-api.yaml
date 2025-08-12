@@ -4,6 +4,7 @@ metadata:
   name: recipe-api
   labels:
     app: recipe
+    tier: svc-backend
 spec:
   ports:
     - name: http
@@ -15,6 +16,5 @@ spec:
       targetPort: 8443
       nodePort: 30443
   selector:
-    app: recipe
     tier: backend
   type: NodePort

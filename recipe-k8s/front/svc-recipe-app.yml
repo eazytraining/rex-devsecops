@@ -4,12 +4,12 @@ metadata:
   name: recipe-app
   labels:
     app: recipe
+    tier: svc-frontend
 spec:
   ports:
     - port: 80
       targetPort: 80
       nodePort: 30080
   selector:
-    app: recipe
     tier: frontend
   type: NodePort

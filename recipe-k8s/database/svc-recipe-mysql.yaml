@@ -4,11 +4,11 @@ metadata:
   name: recipe-mysql
   labels:
     app: recipe
+    tier: svc-mysql
 spec:
   ports:
     - port: 3306
       targetPort: 3306
   selector:
-    app: recipe
     tier: bdd
   type: ClusterIP
