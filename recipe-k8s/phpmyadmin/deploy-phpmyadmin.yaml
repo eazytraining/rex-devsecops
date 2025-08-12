@@ -1,7 +1,9 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: phpmyadmin
+  namespace: recipe-ns
   labels:
     app: phpmyadmin
 spec:
@@ -20,9 +22,6 @@ spec:
         ports:
         - containerPort: 80
         env:
-        # Bypasser complètement la page de login
-        #- name: PMA_AUTH_TYPE
-        #  value: config    
         - name: PMA_HOST
           value: recipe-mysql
         - name: PMA_PORT
