@@ -7,5 +7,6 @@ resources:
   - ns        # Contient la définition du namespace
   - database
   - front
+  - api
   - phpmyadmin
   # - nginx-and-metallb
