@@ -6,10 +6,9 @@ metadata:
     app: recipe
     tier: svc-frontend
 spec:
+  type: LoadBalancer
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30080
   selector:
     tier: frontend
-  type: NodePort

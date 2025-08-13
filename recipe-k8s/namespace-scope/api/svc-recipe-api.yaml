@@ -6,15 +6,13 @@ metadata:
     app: recipe
     tier: svc-backend
 spec:
+  type: LoadBalancer
   ports:
     - name: http
       port: 8080
       targetPort: 8080
-      nodePort: 30088
     - name: https
       port: 8443
       targetPort: 8443
-      nodePort: 30443
   selector:
     tier: backend
-  type: NodePort
