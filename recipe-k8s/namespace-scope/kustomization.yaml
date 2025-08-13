@@ -5,7 +5,6 @@ namespace: recipe-ns  # Namespace à utiliser pour toutes les ressources
 
 resources:
   - ns        # Contient la définition du namespace
-  - storageclass
   - database
   - front
   - phpmyadmin
