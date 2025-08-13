@@ -22,30 +22,37 @@ spec:
       containers:
       - name: recipe-mysql
         image: mysql:8.0
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret-db
-              key: MYSQL_ROOT_PASSWORD
-        - name: MYSQL_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: mysql-config
-              key: MYSQL_DATABASE
-        - name: MYSQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret-db
-              key: MYSQL_USER
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret-db
-              key: MYSQL_PASSWORD
+        
+        # env:
+        # - name: MYSQL_ROOT_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-secret-db
+        #       key: MYSQL_ROOT_PASSWORD
+        # - name: MYSQL_DATABASE
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: mysql-config
+        #       key: MYSQL_DATABASE
+        # - name: MYSQL_USER
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-secret-db
+        #       key: MYSQL_USER
+        # - name: MYSQL_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-secret-db
+        #       key: MYSQL_PASSWORD
         ports:
         - containerPort: 3306
           name: mysql-port
+        envFrom:
+          - secretRef:
+              name: mysql-secret
+        env:
+          - name: MYSQL_DATABASE
+            value: recipe-demo
         volumeMounts:
         - name: mysql-data
           mountPath: /var/lib/mysql

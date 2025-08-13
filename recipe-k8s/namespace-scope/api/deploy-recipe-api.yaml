@@ -28,32 +28,35 @@ spec:
       - name: recipe-api
         image: blondel/api:v1
         imagePullPolicy: IfNotPresent
-        env:
-        - name: SPRING_DATASOURCE_URL
-          valueFrom:
-            configMapKeyRef:
+        envFrom:
+          - configMapRef:
               name: recipe-backend-config
-              key: SPRING_DATASOURCE_URL
-        - name: FRONTEND_URL
-          valueFrom:
-            configMapKeyRef:
-              name: recipe-backend-config
-              key: FRONTEND_URL
-        - name: SPRING_APPLICATION_NAME
-          valueFrom:
-            configMapKeyRef:
-              name: recipe-backend-config
-              key: SPRING_APPLICATION_NAME
-        - name: SPRING_DATASOURCE_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret-api
-              key: MYSQL_USER
-        - name: SPRING_DATASOURCE_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret-api
-              key: MYSQL_PASSWORD
+        # env:
+        # - name: SPRING_DATASOURCE_URL
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: recipe-backend-config
+        #       key: SPRING_DATASOURCE_URL
+        # - name: FRONTEND_URL
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: recipe-backend-config
+        #       key: FRONTEND_URL
+        # - name: SPRING_APPLICATION_NAME
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: recipe-backend-config
+        #       key: SPRING_APPLICATION_NAME
+        # - name: SPRING_DATASOURCE_USERNAME
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-secret-api
+        #       key: MYSQL_USER
+        # - name: SPRING_DATASOURCE_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-secret-api
+        #       key: MYSQL_PASSWORD
         ports:
         - containerPort: 8080
           name: http
