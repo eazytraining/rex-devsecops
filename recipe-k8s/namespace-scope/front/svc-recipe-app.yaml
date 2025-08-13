@@ -1,14 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: recipe-app
-  labels:
-    app: recipe
-    tier: svc-frontend
+  name: recipe-frontend
+  namespace: recipe-ns
 spec:
-  type: LoadBalancer
+  type: NodePort
+  selector:
+    app: recipe-frontend
   ports:
     - port: 80
       targetPort: 80
-  selector:
-    tier: frontend
+      nodePort: 30080
