@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - secret-recipe-mysql.yaml
+  # - secret-recipe-mysql.yaml
   - cm-recipe-mysql.yaml
   - deploy-recipe-mysql.yaml
   - svc-recipe-mysql.yaml

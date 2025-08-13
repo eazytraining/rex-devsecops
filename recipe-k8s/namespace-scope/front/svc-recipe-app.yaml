@@ -6,7 +6,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: recipe-frontend
+    tier: frontend
   ports:
     - port: 80
       targetPort: 80
