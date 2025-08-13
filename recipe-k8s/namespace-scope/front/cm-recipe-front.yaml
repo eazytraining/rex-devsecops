@@ -4,4 +4,4 @@ kind: ConfigMap
 metadata:
   name: recipe-frontend-config
 data:
-  API_URL: "https://192.168.99.11:30443/api"
+  API_URL: "https://54.175.26.36:30443/api"

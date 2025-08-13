@@ -5,7 +5,7 @@
 #   name: recipe-backend-config
 # data:
 #   SPRING_DATASOURCE_URL: "jdbc:mysql://recipe-mysql:3306/recipe_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
-#   FRONTEND_URL: "http://192.168.99.11:80"
+#   FRONTEND_URL: "http://54.175.26.36:80"
 #   SPRING_APPLICATION_NAME: "recipe-demo"
 
 apiVersion: v1
@@ -17,4 +17,4 @@ data:
   SPRING_DATASOURCE_USERNAME: recipe_user
   SPRING_DATASOURCE_PASSWORD: recipe_pass
   SPRING_APPLICATION_NAME: recipe-demo
-  FRONTEND_URL: http://192.168.99.11:30080
+  FRONTEND_URL: http://54.175.26.36:30080
