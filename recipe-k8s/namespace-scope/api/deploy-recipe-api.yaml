@@ -47,12 +47,12 @@ spec:
         - name: SPRING_DATASOURCE_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mysql-secret
+              name: mysql-secret-api
               key: MYSQL_USER
         - name: SPRING_DATASOURCE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-secret
+              name: mysql-secret-api
               key: MYSQL_PASSWORD
         ports:
         - containerPort: 8080
